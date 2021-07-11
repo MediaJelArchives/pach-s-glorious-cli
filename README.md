@@ -1,4 +1,4 @@
-# Pach's magnificent CLI v2
+# Pach's glorious CLI v2
 
 An evolution of the original Pach's handy dandy cli but better.
 
@@ -9,9 +9,23 @@ An evolution of the original Pach's handy dandy cli but better.
 
 <!-- toc -->
 
+- [Installation](#installation)
 - [Usage](#usage)
 - [Commands](#commands)
 <!-- tocstop -->
+
+# Installation
+
+One of the reasons why I remade the Pach CLI in node-js is for
+ease of dependency management. Whereas in bash you'd have to
+manually install relevant dependencies which may be more difficult
+or easy (especially to archlinux user, I use Arch btw.) Everyone has `npm` or at least everyone `should.` Who knows I might even dockerize this...
+
+Run these commands to install:
+
+```bash
+git clone
+```
 
 # Usage
 

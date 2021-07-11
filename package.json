@@ -1,12 +1,12 @@
 {
-  "name": "pach-cli-v2",
+  "name": "pach-s-glorious-cli",
   "description": "pach CLI v2 written in nodejs",
   "version": "1.0.0",
   "author": "Pacholo Amit @pacholoamit",
   "bin": {
     "pach": "./bin/run"
   },
-  "bugs": "https://github.com/pacholoamit/pach-cli-v2/issues",
+  "bugs": "https://github.com/pacholoamit/pach-s-glorious-cli/issues",
   "dependencies": {
     "@oclif/command": "^1",
     "@oclif/config": "^1",
