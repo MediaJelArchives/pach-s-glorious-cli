@@ -4,9 +4,9 @@ export interface QueryClass {
 }
 
 export interface PageviewClass {
-  getPageviews(appId: string): Promise<void>
+  getPageviews(appId: string, limit: string): Promise<void>
 }
 
 export interface TransactionClass {
-  getTransactions(appId: string): Promise<void>
+  getTransactions(appId: string, limit: string): Promise<void>
 }

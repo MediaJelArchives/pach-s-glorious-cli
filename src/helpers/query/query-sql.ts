@@ -24,7 +24,7 @@ export default class SQL {
       TR_TOTAL,
       TR_ORDERID
       FROM DATA_COLLECTION_DB.SNOWPLOW.COMMERCE_TRANSACTIONS
-      WHERE APP_ID=${this.appId}' 
+      WHERE APP_ID='${this.appId}' 
       ORDER BY COLLECTOR_TSTAMP DESC
       LIMIT ${this.limit}`
 

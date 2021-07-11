@@ -1,6 +1,6 @@
 import { Command, flags } from '@oclif/command'
 import QueryHelper from '../helpers/query/query-helper'
-import finishTask from '../helpers/shared/finish-task'
+
 import cli from 'cli-ux'
 
 export default class Query extends Command {
@@ -21,26 +21,31 @@ export default class Query extends Command {
       char: 't',
       description: `query all transaction data based on app ID sorted by date from snowflake`,
     }),
+
+    limit: flags.string({
+      char: 'l',
+      description: `query all transaction data based on app ID sorted by date from snowflake`,
+      default: 'NULL',
+    }),
   }
 
   async run() {
     // Declare the arguments
-    const { flags, raw } = this.parse(Query)
-    const appId = raw[0].input
+    const { flags } = this.parse(Query)
+    const { pageviews, limit, transactions } = flags
+    const appId = pageviews ?? transactions ?? 'NULL'
 
-    flags.pageviews && (await this.queryPageview(appId))
-    flags.transactions && (await this.queryTransaction(appId))
-
-    // End task
+    flags.pageviews && (await this.queryPageview(appId, limit))
+    flags.transactions && (await this.queryTransaction(appId, limit))
   }
 
-  private async queryPageview(appId: string) {
+  private async queryPageview(appId: string, limit: string) {
     cli.action.start(`Querying pageviews for ${appId}`, '', { stdout: true })
-    await QueryHelper.Pageview.getPageviews(appId)
-    finishTask(`Task completed for ${appId}`)
+    await QueryHelper.Pageview.getPageviews(appId, limit)
   }
 
-  private async queryTransaction(appId: string) {
+  private async queryTransaction(appId: string, limit: string) {
     cli.action.start(`Querying transactions for ${appId}`, '', { stdout: true })
+    await QueryHelper.Transaction.getTransactions(appId, limit)
   }
 }
