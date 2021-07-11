@@ -3,16 +3,53 @@
 An evolution of the original Pach's handy dandy cli but better.
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
-[![Version](https://img.shields.io/npm/v/pach-cli-v2.svg)](https://npmjs.org/package/pach-cli-v2)
-[![Downloads/week](https://img.shields.io/npm/dw/pach-cli-v2.svg)](https://npmjs.org/package/pach-cli-v2)
-[![License](https://img.shields.io/npm/l/pach-cli-v2.svg)](https://github.com/pacholoamit/pach-cli-v2/blob/master/package.json)
 
 <!-- toc -->
 
+- [Prerequisites](#Prerequisites)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Commands](#commands)
 <!-- tocstop -->
+
+# Prerequisites
+
+It is absolutely IMPORTANT you add your snowflake credentials as an
+`environment variable` on your terminal. Do the following command for eaze of use:
+
+```bash
+git clone https://github.com/pacholoamit/pach-s-glorious-cli.git
+
+cd pach-s-glorious-cli
+
+nano setup.sh
+
+# Expected output
+#!/bin/bash
+
+export SNOWFLAKE_ACCOUNT=<SNOWFLAKE_ACCOUNT_NAME>
+export SNOWFLAKE_USERNAME=<SNOWFLAKE_USER_NAME>
+export SNOWFLAKE_PASSWORD=<SNOWFLAKE_PASSWORD>
+export SNOWFLAKE_REGION=<SNOWFLAKE_REGION>
+export SNOWFLAKE_DATABASE=<SNOWFLAKE_DATABASE>
+export SNOWFLAKE_WAREHOUSE=<SNOWFLAKE_REPORTING>
+
+# Please for the love of God, add your credentials or
+# all of this will be for nothing. After replacing the
+# necessary fields with your creds
+
+CTRL + A # In your setup.sh file
+
+CTRL + C # Copy that
+
+Open your terminal
+
+CTRL + V # Pase it
+
+# This will add the environment files permanently on your
+# parent terminal's scope. You can use `source` but I do not
+# recommend it because it's temporary.
+```
 
 # Installation
 
@@ -24,7 +61,11 @@ or easy (especially to archlinux user, I use Arch btw.) Everyone has `npm` or at
 Run these commands to install:
 
 ```bash
-git clone
+
+
+npm install #Sudo if you have to
+
+npm link
 ```
 
 # Usage
@@ -33,7 +74,6 @@ git clone
 
 ```sh-session
 
-$ npm install -g pach-cli-v2
 $ pach COMMAND
 
 running command...
