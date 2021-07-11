@@ -1,4 +1,5 @@
 import { Command, flags } from '@oclif/command'
+import QueryHelper from '../helpers/query/query-helper'
 
 export default class Query extends Command {
   static description = 'Query specific app ids from Snowflake database'
@@ -29,7 +30,7 @@ export default class Query extends Command {
   }
 
   private async queryPageview(appId: string) {
-    console.log(process.env.SNOWFLAKE_ACCOUNT)
+    QueryHelper.Pageview.getPageviews(appId)
     this.log(`querying pageview for ${appId}`)
   }
 
