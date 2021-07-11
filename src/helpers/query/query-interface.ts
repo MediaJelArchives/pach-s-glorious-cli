@@ -1,14 +1,12 @@
 export interface QueryClass {
-  Pageview: Pageview
-  Transaction: Transaction
+  Pageview: PageviewClass
+  Transaction: TransactionClass
 }
 
-export interface Pageview {
+export interface PageviewClass {
   getPageviews(appId: string): Promise<void>
-  sqlText: string
 }
 
-export interface Transaction {
+export interface TransactionClass {
   getTransactions(appId: string): Promise<void>
-  sqlText: string
 }

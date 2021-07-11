@@ -11,8 +11,11 @@
     "@oclif/command": "^1",
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",
+    "@types/node-notifier": "^8.0.1",
     "@types/snowflake-sdk": "^1.6.0",
+    "cli-ux": "^5.6.3",
     "eslint-config-prettier": "^8.3.0",
+    "node-notifier": "^10.0.0",
     "snowflake-sdk": "^1.6.1",
     "tslib": "^1"
   },

@@ -1,5 +1,7 @@
 import { Command, flags } from '@oclif/command'
 import QueryHelper from '../helpers/query/query-helper'
+import finishTask from '../helpers/shared/finish-task'
+import cli from 'cli-ux'
 
 export default class Query extends Command {
   static description = 'Query specific app ids from Snowflake database'
@@ -22,19 +24,23 @@ export default class Query extends Command {
   }
 
   async run() {
+    // Declare the arguments
     const { flags, raw } = this.parse(Query)
     const appId = raw[0].input
 
-    flags.pageviews && this.queryPageview(appId)
-    flags.transactions && this.queryTransaction(appId)
+    flags.pageviews && (await this.queryPageview(appId))
+    flags.transactions && (await this.queryTransaction(appId))
+
+    // End task
   }
 
   private async queryPageview(appId: string) {
-    QueryHelper.Pageview.getPageviews(appId)
-    this.log(`querying pageview for ${appId}`)
+    cli.action.start(`Querying pageviews for ${appId}`, '', { stdout: true })
+    await QueryHelper.Pageview.getPageviews(appId)
+    finishTask(`Task completed for ${appId}`)
   }
 
   private async queryTransaction(appId: string) {
-    this.log(`querying transaction for ${appId}`)
+    cli.action.start(`Querying transactions for ${appId}`, '', { stdout: true })
   }
 }
