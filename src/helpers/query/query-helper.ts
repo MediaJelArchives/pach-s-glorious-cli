@@ -23,7 +23,7 @@ const QueryHelper = {
             get: (row: any) => row['APP_ID'],
           },
           COLLECTOR_TSTAMP: {
-            header: 'TSTAMP',
+            header: 'COLLECTOR_TSTAMP',
             get: (row: any) => row['COLLECTOR_TSTAMP'],
           },
         })
