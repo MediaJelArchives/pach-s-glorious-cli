@@ -1,7 +1,7 @@
 {
   "name": "pach-cli",
   "description": "A glorious CLI meant to extend the abilities of it's predecessor",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Pacholo Amit @pacholoamit",
   "bin": {
     "pach": "./bin/run"

@@ -66,7 +66,7 @@ $ npm install -g pach-cli
 $ pach COMMAND
 running command...
 $ pach (-v|--version|version)
-pach-cli/1.0.0 linux-x64 node-v16.4.2
+pach-cli/1.1.0 linux-x64 node-v16.4.2
 $ pach --help [COMMAND]
 USAGE
   $ pach COMMAND
@@ -110,5 +110,5 @@ OPTIONS
   -l, --limit=limit  [default: NULL] flag to declare the limit of entries to be returned (note: 'NULL' === no limits)
 ```
 
-_See code: [src/commands/query.ts](https://github.com/pacholoamit/pach-cli-v2/blob/v1.0.0/src/commands/query.ts)_
+_See code: [src/commands/query.ts](https://github.com/pacholoamit/pach-cli-v2/blob/v1.1.0/src/commands/query.ts)_
 <!-- commandsstop -->
