@@ -6,12 +6,13 @@
   "bin": {
     "pach": "./bin/run"
   },
-  "bugs": "https://github.com/pacholoamit/pach-s-glorious-cli/issues",
+  "bugs": "https://www.npmjs.com/package/pach-cli",
   "dependencies": {
     "@oclif/command": "^1",
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",
     "@oclif/plugin-update": "^1.3.10",
+    "@oclif/plugin-warn-if-update-available": "^1.7.0",
     "@types/node-notifier": "^8.0.1",
     "@types/snowflake-sdk": "^1.6.0",
     "cli-ux": "^5.6.3",
@@ -45,7 +46,7 @@
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
-  "homepage": "https://github.com/pacholoamit/pach-s-glorious-cli",
+  "homepage": "https://www.npmjs.com/package/pach-cli",
   "keywords": [
     "oclif"
   ],
@@ -55,8 +56,15 @@
     "commands": "./lib/commands",
     "bin": "pach",
     "plugins": [
-      "@oclif/plugin-help"
-    ]
+      "@oclif/plugin-update",
+      "@oclif/plugin-help",
+      "@oclif/plugin-warn-if-update-available"
+    ],
+    "warn-if-update-available": {
+      "timeoutInDays": 1,
+      "message": "<%= config.name %> update available from <%= chalk.greenBright(config.version) %> to <%= chalk.greenBright(latest) %>.",
+      "registry": "https://www.npmjs.com/package/pach-cli"
+    }
   },
   "repository": "pacholoamit/pach-cli-v2",
   "scripts": {
