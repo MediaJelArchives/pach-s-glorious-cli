@@ -6,57 +6,11 @@ An evolution of the original Pach's handy dandy cli but better.
 
 <!-- toc -->
 * [Pach's glorious CLI v2](#pachs-glorious-cli-v2)
-* [Prerequisites](#prerequisites)
-* [Expected output](#expected-output)
-* [Please for the love of God, add your credentials or](#please-for-the-love-of-god-add-your-credentials-or)
-* [all of this will be for nothing. After replacing the](#all-of-this-will-be-for-nothing-after-replacing-the)
-* [necessary fields with your creds](#necessary-fields-with-your-creds)
-* [This will add the environment files permanently on your](#this-will-add-the-environment-files-permanently-on-your)
-* [parent terminal's scope. You can use `source` but I do not](#parent-terminals-scope-you-can-use-source-but-i-do-not)
-* [recommend it because it's temporary.](#recommend-it-because-its-temporary)
 * [Installation](#installation)
+* [Additional set up](#additional-set-up)
 * [Usage](#usage)
 * [Commands](#commands)
 <!-- tocstop -->
-
-# Prerequisites
-
-It is absolutely IMPORTANT you add your snowflake credentials as an
-`environment variable` on your terminal. Do the following command for eaze of use:
-
-```bash
-git clone https://github.com/pacholoamit/pach-s-glorious-cli.git
-
-cd pach-s-glorious-cli
-
-nano setup.sh
-
-# Expected output
-#!/bin/bash
-
-export SNOWFLAKE_ACCOUNT=<SNOWFLAKE_ACCOUNT_NAME>
-export SNOWFLAKE_USERNAME=<SNOWFLAKE_USER_NAME>
-export SNOWFLAKE_PASSWORD=<SNOWFLAKE_PASSWORD>
-export SNOWFLAKE_REGION=<SNOWFLAKE_REGION>
-export SNOWFLAKE_DATABASE=<SNOWFLAKE_DATABASE>
-export SNOWFLAKE_WAREHOUSE=<SNOWFLAKE_REPORTING>
-
-# Please for the love of God, add your credentials or
-# all of this will be for nothing. After replacing the
-# necessary fields with your creds
-
-CTRL + A # In your setup.sh file
-
-CTRL + C # Copy that
-
-Open your terminal
-
-CTRL + V # Pase it
-
-# This will add the environment files permanently on your
-# parent terminal's scope. You can use `source` but I do not
-# recommend it because it's temporary.
-```
 
 # Installation
 
@@ -69,21 +23,50 @@ Run these commands to install:
 
 ```bash
 
+npm install -g pach-cli ##Sudo if you have to
 
-npm install #Sudo if you have to
 
-npm link
+```
+
+# Additional set up
+
+It is absolutely IMPORTANT you add your snowflake credentials as an
+`environment variable` on your terminal. Do the following command for eaze of use:
+
+```bash
+## Expected output
+#!/bin/bash
+
+export SNOWFLAKE_ACCOUNT=<SNOWFLAKE_ACCOUNT_NAME>
+export SNOWFLAKE_USERNAME=<SNOWFLAKE_USER_NAME>
+export SNOWFLAKE_PASSWORD=<SNOWFLAKE_PASSWORD>
+export SNOWFLAKE_REGION=<SNOWFLAKE_REGION>
+export SNOWFLAKE_DATABASE=<SNOWFLAKE_DATABASE>
+export SNOWFLAKE_WAREHOUSE=<SNOWFLAKE_REPORTING>
+
+
+CTRL + A # In your setup.sh file
+
+CTRL + C # Copy that
+
+Open your terminal
+
+CTRL + V # Pase it
+
+## This will add the environment files permanently on your
+## parent terminal's scope. You can use `source` but I do not
+## recommend it because it's temporary.
 ```
 
 # Usage
 
 <!-- usage -->
 ```sh-session
-$ npm install -g pach-s-glorious-cli
+$ npm install -g pach-cli
 $ pach COMMAND
 running command...
 $ pach (-v|--version|version)
-pach-s-glorious-cli/1.0.0 linux-x64 node-v16.4.2
+pach-cli/1.0.0 linux-x64 node-v16.4.2
 $ pach --help [COMMAND]
 USAGE
   $ pach COMMAND
