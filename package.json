@@ -1,6 +1,6 @@
 {
   "name": "pach-s-glorious-cli",
-  "description": "pach CLI v2 written in nodejs",
+  "description": "A glorious CLI meant to extend the abilities of it's predecessor",
   "version": "1.0.0",
   "author": "Pacholo Amit @pacholoamit",
   "bin": {
@@ -44,7 +44,7 @@
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
-  "homepage": "https://github.com/pacholoamit/pach-cli-v2",
+  "homepage": "https://github.com/pacholoamit/pach-s-glorious-cli",
   "keywords": [
     "oclif"
   ],

@@ -5,11 +5,18 @@ An evolution of the original Pach's handy dandy cli but better.
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 
 <!-- toc -->
-
-- [Prerequisites](#Prerequisites)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Commands](#commands)
+* [Pach's glorious CLI v2](#pachs-glorious-cli-v2)
+* [Prerequisites](#prerequisites)
+* [Expected output](#expected-output)
+* [Please for the love of God, add your credentials or](#please-for-the-love-of-god-add-your-credentials-or)
+* [all of this will be for nothing. After replacing the](#all-of-this-will-be-for-nothing-after-replacing-the)
+* [necessary fields with your creds](#necessary-fields-with-your-creds)
+* [This will add the environment files permanently on your](#this-will-add-the-environment-files-permanently-on-your)
+* [parent terminal's scope. You can use `source` but I do not](#parent-terminals-scope-you-can-use-source-but-i-do-not)
+* [recommend it because it's temporary.](#recommend-it-because-its-temporary)
+* [Installation](#installation)
+* [Usage](#usage)
+* [Commands](#commands)
 <!-- tocstop -->
 
 # Prerequisites
@@ -71,35 +78,28 @@ npm link
 # Usage
 
 <!-- usage -->
-
 ```sh-session
-
+$ npm install -g pach-s-glorious-cli
 $ pach COMMAND
-
 running command...
-
 $ pach (-v|--version|version)
-pach-cli-v2/1.0.0 linux-x64 node-v16.4.2
-
+pach-s-glorious-cli/1.0.0 linux-x64 node-v16.4.2
 $ pach --help [COMMAND]
-
 USAGE
   $ pach COMMAND
 ...
 ```
-
 <!-- usagestop -->
 
 # Commands
 
 <!-- commands -->
-
-- [`pach help [COMMAND]`](#pach-help-command)
-- [`pach query [APP_ID]`](#pach-query-file)
+* [`pach help [COMMAND]`](#pach-help-command)
+* [`pach query TYPE`](#pach-query-type)
 
 ## `pach help [COMMAND]`
 
-display help for pach commands
+display help for pach
 
 ```
 USAGE
@@ -110,23 +110,22 @@ ARGUMENTS
 
 OPTIONS
   --all  see all commands in CLI
-  query  see all flags & args for the query command
 ```
 
-## `pach query [APP_ID]`
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
 
-describe the command here
+## `pach query TYPE`
+
+Query specific app ids from Snowflake database
 
 ```
 USAGE
-  $ pach query [APP_ID]
+  $ pach query TYPE
 
 OPTIONS
-  -h, --help                show CLI help
-  -p, --pageviews=APP_ID    query all pageview data based on app ID sorted by date from snowflake
-  -t, --transactions=APP_ID  query all transaction data based on app ID sorted by date from snowflake
+  -a, --appId=appId  [default: null] flag to declare the app id to query
+  -l, --limit=limit  [default: NULL] flag to declare the limit of entries to be returned (note: 'NULL' === no limits)
 ```
 
 _See code: [src/commands/query.ts](https://github.com/pacholoamit/pach-cli-v2/blob/v1.0.0/src/commands/query.ts)_
-
 <!-- commandsstop -->
