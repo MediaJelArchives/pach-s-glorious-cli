@@ -29,7 +29,7 @@ const QueryHelper: QueryClass = {
         sqlText,
         complete(err, stmt, rows) {
           const result = handleResults(err, rows)
-
+          console.log(result)
           cli.table(result, {
             APP_ID: {
               header: 'APP_ID',

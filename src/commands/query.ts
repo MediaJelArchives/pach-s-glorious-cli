@@ -29,9 +29,19 @@ export default class Query extends Command {
     }),
   }
 
+  static args = [
+    {
+      name: 'query type',
+      required: true,
+      default: 'pageviews',
+      options: ['pageviews', 'transactions'],
+    },
+  ]
+
   async run() {
     // Declare the arguments
-    const { flags } = this.parse(Query)
+    const { flags, args } = this.parse(Query)
+    console.log(args)
     const { pageviews, limit, transactions } = flags
     const appId = pageviews ?? transactions ?? 'NULL'
 

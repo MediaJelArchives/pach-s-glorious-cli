@@ -9,10 +9,10 @@ export default class SQL {
   }
 
   public pageview() {
-    const sql = `SELECT APP_ID, COLLECTOR_TSTAMP
-      FROM SNOWPLOW.BASE_EVENTS
-      WHERE APP_ID = '${this.appId}' AND EVENT='page_view'
-      ORDER BY COLLECTOR_TSTAMP DESC LIMIT ${this.limit}`
+    const sql = `SELECT event:APP_ID, event:COLLECTOR_TSTAMP
+      FROM SNOWPLOW.EVENTS
+      WHERE event:APP_ID = '${this.appId}' AND event:EVENT='page_view'
+      ORDER BY event:COLLECTOR_TSTAMP DESC LIMIT ${this.limit}`
 
     return sql
   }
