@@ -66,7 +66,7 @@ $ npm install -g pach-cli
 $ pach COMMAND
 running command...
 $ pach (-v|--version|version)
-pach-cli/1.1.0 linux-x64 node-v16.4.2
+pach-cli/1.2.0 linux-x64 node-v16.4.2
 $ pach --help [COMMAND]
 USAGE
   $ pach COMMAND
@@ -79,6 +79,7 @@ USAGE
 <!-- commands -->
 * [`pach help [COMMAND]`](#pach-help-command)
 * [`pach query TYPE`](#pach-query-type)
+* [`pach update [CHANNEL]`](#pach-update-channel)
 
 ## `pach help [COMMAND]`
 
@@ -110,5 +111,16 @@ OPTIONS
   -l, --limit=limit  [default: NULL] flag to declare the limit of entries to be returned (note: 'NULL' === no limits)
 ```
 
-_See code: [src/commands/query.ts](https://github.com/pacholoamit/pach-cli-v2/blob/v1.1.0/src/commands/query.ts)_
+_See code: [src/commands/query.ts](https://github.com/pacholoamit/pach-cli-v2/blob/v1.2.0/src/commands/query.ts)_
+
+## `pach update [CHANNEL]`
+
+update the pach CLI
+
+```
+USAGE
+  $ pach update [CHANNEL]
+```
+
+_See code: [@oclif/plugin-update](https://github.com/oclif/plugin-update/blob/v1.3.10/src/commands/update.ts)_
 <!-- commandsstop -->
