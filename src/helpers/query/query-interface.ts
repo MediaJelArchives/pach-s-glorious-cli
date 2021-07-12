@@ -9,6 +9,11 @@ export interface QueryClass {
   Transaction: TransactionClass
 }
 
+export interface SQLContext {
+  sqlText: string
+  columns: any
+}
+
 export interface PageviewClass {
   getPageviews(context: QueryArgs): Promise<void>
 }
