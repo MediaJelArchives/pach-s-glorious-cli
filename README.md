@@ -66,7 +66,7 @@ $ npm install -g pach-cli
 $ pach COMMAND
 running command...
 $ pach (-v|--version|version)
-pach-cli/1.2.0 linux-x64 node-v16.4.2
+pach-cli/1.2.0 linux-x64 node-v16.6.0
 $ pach --help [COMMAND]
 USAGE
   $ pach COMMAND
@@ -77,9 +77,26 @@ USAGE
 # Commands
 
 <!-- commands -->
+* [`pach configure [FILE]`](#pach-configure-file)
 * [`pach help [COMMAND]`](#pach-help-command)
 * [`pach query TYPE`](#pach-query-type)
 * [`pach update [CHANNEL]`](#pach-update-channel)
+
+## `pach configure [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ pach configure [FILE]
+
+OPTIONS
+  -f, --force
+  -h, --help       show CLI help
+  -n, --name=name  name to print
+```
+
+_See code: [src/commands/configure.ts](https://github.com/pacholoamit/pach-cli-v2/blob/v1.2.0/src/commands/configure.ts)_
 
 ## `pach help [COMMAND]`
 
@@ -107,7 +124,7 @@ USAGE
   $ pach query TYPE
 
 OPTIONS
-  -a, --appId=appId  [default: null] flag to declare the app id to query
+  -a, --appId=appId  (required) flag to declare the app id to query
   -l, --limit=limit  [default: NULL] flag to declare the limit of entries to be returned (note: 'NULL' === no limits)
 ```
 

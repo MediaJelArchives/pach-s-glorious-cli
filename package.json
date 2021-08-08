@@ -1,6 +1,6 @@
 {
   "name": "pach-cli",
-  "description": "A glorious CLI meant to extend the abilities of it's predecessor",
+  "description": "Pach's Glorious CLI",
   "version": "1.2.0",
   "author": "Pacholo Amit @pacholoamit",
   "bin": {
@@ -15,6 +15,7 @@
     "@oclif/plugin-warn-if-update-available": "^1.7.0",
     "@types/node-notifier": "^8.0.1",
     "@types/snowflake-sdk": "^1.6.0",
+    "chalk": "^4.1.2",
     "cli-ux": "^5.6.3",
     "eslint-config-prettier": "^8.3.0",
     "node-notifier": "^10.0.0",
@@ -25,6 +26,7 @@
     "@oclif/dev-cli": "^1",
     "@oclif/test": "^1",
     "@types/chai": "^4",
+    "@types/fs-extra": "^9.0.12",
     "@types/mocha": "^5",
     "@types/node": "^10",
     "chai": "^4",
@@ -55,6 +57,9 @@
   "oclif": {
     "commands": "./lib/commands",
     "bin": "pach",
+    "hooks": {
+      "init": "./src/hooks/init.ts"
+    },
     "plugins": [
       "@oclif/plugin-update",
       "@oclif/plugin-help",

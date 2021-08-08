@@ -1,7 +1,8 @@
-import { Command, flags } from '@oclif/command'
-import { QueryArgs } from '../helpers/query/query-interface'
-import QueryHelper from '../helpers/query/query-helper'
-import initiateMessage from '../helpers/shared/initiate-message'
+import { flags } from '@oclif/command'
+import Command from '../helpers/shared/base'
+import { QueryArgs, SQLContext } from '../helpers/query/interface'
+import SQL from '../helpers/shared/SQL'
+import { cli } from 'cli-ux'
 
 export default class Query extends Command {
   static description = 'Query specific app ids from Snowflake database'
@@ -12,11 +13,10 @@ export default class Query extends Command {
       description: `Help documentation`,
       hidden: true,
     }),
-    // flag with a value (-n, --name=VALUE)
     appId: flags.string({
       char: 'a',
       description: `flag to declare the app id to query`,
-      default: 'null',
+      required: true,
     }),
 
     limit: flags.string({
@@ -30,43 +30,44 @@ export default class Query extends Command {
     {
       name: 'type',
       required: true,
-      default: 'pageviews',
+      default: null,
       options: ['pageviews', 'transactions'],
     },
   ]
 
   async run() {
-    // Declare the arguments
     const { flags, args } = this.parse(Query)
     const { appId, limit } = flags
     const { type } = args
     const context: QueryArgs = { appId, limit, type }
 
     try {
-      await this.initiateQuery(context)
+      this.task.initiateTask(`Querying ${type} for ${appId}, limit ${limit}`)
+      this.initiatQuery(context)
     } catch (error) {
-      console.warn(error)
+      this.error(error)
     }
-
-    // type === 'pageviews' && (await this.queryPageview(appId, limit))
-    // type === 'transactions' && (await this.queryTransaction(appId, limit))
   }
 
-  private async initiateQuery(context: QueryArgs): Promise<void> {
-    const { appId, limit, type } = context
+  private async initiatQuery(context: QueryArgs) {
+    const sqlContext: SQLContext = new SQL(context).getStatement()
+    const { limit, appId } = context
+    const { sqlText, columns } = sqlContext
+    const tryTask = this.task.tryTask
+    const finishTask = this.task.finishTask
 
-    initiateMessage(`Querying ${type} for ${appId}, limit ${limit}`)
+    const connection = await this.getConnection
 
-    await QueryHelper.get(context)
+    connection.execute({
+      sqlText,
+      fetchAsString: ['Date'],
+      complete(err: any, stmt: any, rows: any) {
+        const result = tryTask(err, rows)
+
+        cli.table(result, columns)
+
+        finishTask(`Returned ${limit} counts for ${appId}`)
+      },
+    })
   }
-
-  // private async queryPageview(appId: string, limit: string) {
-  //   cli.action.start(`Querying pageviews for ${appId}`, '', { stdout: true })
-  //   await QueryHelper.Pageview.getPageviews(appId, limit)
-  // }
-
-  // private async queryTransaction(appId: string, limit: string) {
-  //   cli.action.start(`Querying transactions for ${appId}`, '', { stdout: true })
-  //   await QueryHelper.Transaction.getTransactions(appId, limit)
-  // }
 }

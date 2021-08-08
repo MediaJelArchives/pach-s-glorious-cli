@@ -1,14 +1,10 @@
-import { QueryArgs } from './query-interface'
-import { SQLContext } from './query-interface'
+import { QueryArgs } from '../query/interface'
+import { SQLContext } from '../query/interface'
 export default class SQL {
   private context: QueryArgs
-
   private appId: string
-
   private limit: string
-
   private type: string
-
   constructor(context: QueryArgs) {
     this.context = context
     this.appId = context.appId
@@ -17,13 +13,17 @@ export default class SQL {
   }
 
   public getStatement(): SQLContext {
-    if (this.type === 'pageviews') {
-      return this.genericPageview()
+    switch (this.type) {
+      case 'pageviews': {
+        return this.genericPageview()
+      }
+      case 'transactions': {
+        return this.genericTransaction()
+      }
+      default: {
+        throw new Error('Invalid SQL type')
+      }
     }
-    if (this.type === 'transactions') {
-      return this.genericTransaction()
-    }
-    throw new Error('No SQL for provided type')
   }
 
   private genericPageview(): SQLContext {
