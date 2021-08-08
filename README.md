@@ -66,7 +66,7 @@ $ npm install -g pach-cli
 $ pach COMMAND
 running command...
 $ pach (-v|--version|version)
-pach-cli/1.2.0 linux-x64 node-v16.6.0
+pach-cli/1.2.0 linux-x64 node-v16.6.1
 $ pach --help [COMMAND]
 USAGE
   $ pach COMMAND
@@ -77,23 +77,19 @@ USAGE
 # Commands
 
 <!-- commands -->
-* [`pach configure [FILE]`](#pach-configure-file)
+* [`pach configure`](#pach-configure)
 * [`pach help [COMMAND]`](#pach-help-command)
 * [`pach query TYPE`](#pach-query-type)
+* [`pach reports [FILE]`](#pach-reports-file)
 * [`pach update [CHANNEL]`](#pach-update-channel)
 
-## `pach configure [FILE]`
+## `pach configure`
 
-describe the command here
+Initial configuration for CLI usage
 
 ```
 USAGE
-  $ pach configure [FILE]
-
-OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
+  $ pach configure
 ```
 
 _See code: [src/commands/configure.ts](https://github.com/pacholoamit/pach-cli-v2/blob/v1.2.0/src/commands/configure.ts)_
@@ -129,6 +125,22 @@ OPTIONS
 ```
 
 _See code: [src/commands/query.ts](https://github.com/pacholoamit/pach-cli-v2/blob/v1.2.0/src/commands/query.ts)_
+
+## `pach reports [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ pach reports [FILE]
+
+OPTIONS
+  -f, --force
+  -h, --help       show CLI help
+  -n, --name=name  name to print
+```
+
+_See code: [src/commands/reports.ts](https://github.com/pacholoamit/pach-cli-v2/blob/v1.2.0/src/commands/reports.ts)_
 
 ## `pach update [CHANNEL]`
 

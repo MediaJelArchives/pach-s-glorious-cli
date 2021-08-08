@@ -19,6 +19,7 @@
     "cli-ux": "^5.6.3",
     "eslint-config-prettier": "^8.3.0",
     "node-notifier": "^10.0.0",
+    "public-google-sheets-parser": "^1.2.4",
     "snowflake-sdk": "^1.6.1",
     "tslib": "^1"
   },
@@ -50,7 +51,12 @@
   ],
   "homepage": "https://www.npmjs.com/package/pach-cli",
   "keywords": [
-    "oclif"
+    "oclif",
+    "pach",
+    "mediajel",
+    "snowflake",
+    "pach-cli",
+    "pach cli"
   ],
   "license": "MIT",
   "main": "lib/index.js",

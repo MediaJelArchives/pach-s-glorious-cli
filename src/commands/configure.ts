@@ -52,6 +52,14 @@ export class Configure extends Command {
       }
     )
 
+    const spreadSheetID = await cli.prompt(
+      this.chalk.primary('[Optional] Add the Google sheet ID for reporting?'),
+      {
+        required: false,
+        default: 'NONE',
+      }
+    )
+
     const config: Config = {
       account,
       database,
@@ -59,13 +67,21 @@ export class Configure extends Command {
       region,
       username,
       warehouse,
+      spreadSheetID,
     }
     return config
   }
 
   private writeConfig(configArgs: Config, configPath: string): void {
-    const { account, warehouse, username, region, password, database } =
-      configArgs
+    const {
+      account,
+      warehouse,
+      username,
+      region,
+      password,
+      database,
+      spreadSheetID,
+    } = configArgs
 
     const content = {
       SNOWFLAKE_ACCOUNT: account,
@@ -74,6 +90,7 @@ export class Configure extends Command {
       SNOWFLAKE_REGION: region,
       SNOWFLAKE_DATABASE: database,
       SNOWFLAKE_WAREHOUSE: warehouse,
+      GOOGLE_SPREADSHEET_ID: spreadSheetID,
     }
 
     fs.ensureFileSync(configPath)

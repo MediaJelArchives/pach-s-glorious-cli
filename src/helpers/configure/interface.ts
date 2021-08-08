@@ -5,6 +5,7 @@ interface Config {
   region: string
   database: string
   warehouse: string
+  spreadSheetID?: string
 }
 
 interface ConfigJSON {
@@ -14,4 +15,5 @@ interface ConfigJSON {
   SNOWFLAKE_REGION: string
   SNOWFLAKE_DATABASE: string
   SNOWFLAKE_WAREHOUSE: string
+  GOOGLE_SPREADSHEET_ID?: string
 }

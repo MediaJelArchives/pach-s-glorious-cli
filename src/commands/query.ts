@@ -3,6 +3,7 @@ import Command from '../helpers/shared/base'
 import { QueryArgs, SQLContext } from '../helpers/query/interface'
 import SQL from '../helpers/shared/SQL'
 import { cli } from 'cli-ux'
+import chalk = require('chalk')
 
 export default class Query extends Command {
   static description = 'Query specific app ids from Snowflake database'
@@ -11,7 +12,6 @@ export default class Query extends Command {
     help: flags.help({
       char: 'h',
       description: `Help documentation`,
-      hidden: true,
     }),
     appId: flags.string({
       char: 'a',
@@ -21,7 +21,7 @@ export default class Query extends Command {
 
     limit: flags.string({
       char: 'l',
-      description: `flag to declare the limit of entries to be returned (note: 'NULL' === no limits)`,
+      description: `flag to declare the limit of entries to be returned (note: NULL === no limits)`,
       default: 'NULL',
     }),
   }
@@ -56,7 +56,7 @@ export default class Query extends Command {
     const tryTask = this.task.tryTask
     const finishTask = this.task.finishTask
 
-    const connection = await this.getConnection
+    const connection = await this.snowflakeConnection
 
     connection.execute({
       sqlText,

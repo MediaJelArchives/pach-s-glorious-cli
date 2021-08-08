@@ -60,13 +60,13 @@ export default abstract class extends Command {
    *
    */
 
-  protected getConnection: Promise<snowflake.Connection> = new Promise(
+  protected snowflakeConnection: Promise<snowflake.Connection> = new Promise(
     (resolve, reject) => {
       const configExists = fs.pathExistsSync(this.configPath)
 
       if (configExists) {
-        const findConfig = fs.readFileSync(this.configPath, 'utf8')
-        const config: ConfigJSON = JSON.parse(findConfig)
+        const configSync = fs.readFileSync(this.configPath, 'utf8')
+        const config: ConfigJSON = JSON.parse(configSync)
         const account = config.SNOWFLAKE_ACCOUNT
         const username = config.SNOWFLAKE_USERNAME
         const password = config.SNOWFLAKE_PASSWORD
@@ -103,11 +103,11 @@ export default abstract class extends Command {
    */
 
   protected chalk = {
-    primary(log: string): string {
-      return chalk.cyanBright.bold(log)
+    primary(log: any): void {
+      chalk.cyanBright.bold(log)
     },
-    secondary(log: string): string {
-      return chalk.blue(log)
+    secondary(log: any): void {
+      console.log(chalk.magentaBright(log))
     },
   }
 
@@ -131,7 +131,8 @@ export default abstract class extends Command {
      *
      */
     initiateTask(message: string): void {
-      cli.action.start(message, '', { stdout: true })
+      const chalkMessage = chalk.cyanBright(message)
+      cli.action.start(chalkMessage, '', { stdout: true })
     },
 
     /**
@@ -165,10 +166,11 @@ export default abstract class extends Command {
      *
      */
     finishTask(message: string): void {
-      cli.action.stop(message)
+      const chalkMessage = chalk.magentaBright(message)
+      cli.action.stop(chalkMessage)
       notifier.notify({
         title: 'Task completed!',
-        message: message,
+        message: chalkMessage,
         sound: true,
         wait: true,
       })
