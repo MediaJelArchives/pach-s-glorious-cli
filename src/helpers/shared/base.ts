@@ -106,8 +106,15 @@ export default abstract class extends Command {
     primary(log: any): string {
       return chalk.cyanBright.bold(log)
     },
+    primarylog(log: any): void {
+      console.log(chalk.cyanBright.bold(log))
+    },
+
     secondary(log: any): string {
-      return chalk.magentaBright(log)
+      return chalk.magentaBright.bold(log)
+    },
+    secondarylog(log: any): void {
+      console.log(chalk.magentaBright.bold(log))
     },
   }
 
@@ -131,7 +138,7 @@ export default abstract class extends Command {
      *
      */
     initiateTask(message: string): void {
-      const chalkMessage = chalk.cyanBright(message)
+      const chalkMessage = chalk.greenBright.bold(message)
       cli.action.start(chalkMessage, '', { stdout: true })
     },
 
