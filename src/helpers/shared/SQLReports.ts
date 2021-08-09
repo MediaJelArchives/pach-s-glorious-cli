@@ -8,17 +8,17 @@ export default class SQLReports {
   private retailId: string
   private type: string
   constructor(context: QueryArgsReports) {
-    this.appId = this.appId
     this.context = context
+    this.appId = context.appId
     this.utmCampaign = context.utmCampaign
-    this.retailId = context.retailID
+    this.retailId = context.retailId
     this.type = context.type
   }
 
   public getStatement(): SQLContext {
     switch (this.type) {
       case 'cpc': {
-        return
+        return this.genericDefaultCPCReport()
       }
     }
   }
@@ -47,7 +47,7 @@ export default class SQLReports {
       MKT_CONTENT,
       MKT_CAMPAIGN,
       MKT_CLICKID
-      FROM DATA_COLLECTION_DB.SNOWPLOW.BASE_EVENTS where APP_ID = ${this.appId} and EVENT = 'page_view' and MKT_CAMPAIGN = '%${this.utmCampaign}%' AND USER_IPADDRESS NOT IN(
+      FROM DATA_COLLECTION_DB.SNOWPLOW.BASE_EVENTS where APP_ID = '${this.appId}' and EVENT = 'page_view' and MKT_CAMPAIGN = '${this.utmCampaign}' AND USER_IPADDRESS NOT IN(
       SELECT USER_IPADDRESS FROM (
           SELECT USER_IPADDRESS, COUNT(USER_IPADDRESS) AS IPCOUNT FROM DATA_COLLECTION_DB.SNOWPLOW.AD_IMPRESSIONS WHERE COLLECTOR_TSTAMP > CURRENT_DATE() -30 GROUP BY USER_IPADDRESS HAVING ipcount > 99
         )) order by 1,2 
@@ -65,7 +65,7 @@ export default class SQLReports {
       TR_ORDERID,
       TR_AFFILIATION,
       TR_TOTAL
-      FROM DATA_COLLECTION_DB.SNOWPLOW.COMMERCE_TRANSACTIONS where APP_ID = ${this.appId} AND TRANSACTION_PAGE_URL LIKE ANY (${this.retailId}) AND USER_IPADDRESS NOT IN(
+      FROM DATA_COLLECTION_DB.SNOWPLOW.COMMERCE_TRANSACTIONS where APP_ID = '${this.appId}' AND TRANSACTION_PAGE_URL LIKE ANY ('%${this.retailId}%') AND USER_IPADDRESS NOT IN(
       SELECT USER_IPADDRESS FROM (
         SELECT USER_IPADDRESS ,count(*) as IPCOUNT FROM DATA_COLLECTION_DB.SNOWPLOW.COMMERCE_TRANSACTIONS WHERE COLLECTOR_TSTAMP > CURRENT_DATE() -180 GROUP BY USER_IPADDRESS HAVING IPCOUNT > 15
         )) order by 1,2
