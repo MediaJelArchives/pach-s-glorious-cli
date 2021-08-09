@@ -26,6 +26,12 @@ export default class Reports extends Command {
       description: 'Specified sheet name to process reports on',
       required: true,
     }),
+
+    quiet: flags.boolean({
+      char: 'q',
+      description: 'Specified sheet name to process reports on',
+      default: false,
+    }),
   }
 
   static args = [
@@ -39,10 +45,10 @@ export default class Reports extends Command {
 
   async run() {
     const { args, flags } = this.parse(Reports)
-    const { sheetName: appId } = flags
+    const { sheetName: appId, quiet } = flags
     const { type } = args
 
-    this.task.initiateTask('Initiating report processing!')
+    this.task.initiateTask('Generating report!')
     const configExists = fs.pathExistsSync(this.configPath)
 
     if (configExists) {
@@ -56,6 +62,7 @@ export default class Reports extends Command {
           utmCampaign,
           appId,
           type,
+          quiet,
         }
 
         await this.generateReport(reportsContext)
@@ -68,11 +75,9 @@ export default class Reports extends Command {
 
   private async generateReport(context: QueryArgsReports) {
     const sqlContext: SQLContext = new SQLReports(context).getStatement()
-    const { appId, retailId, type, utmCampaign } = context
+    const { appId, retailId, type, utmCampaign, quiet } = context
     const { sqlText, columns } = sqlContext
-    const tryTask = this.task.tryTask
-    const finishTask = this.task.finishTask
-    const writeCSV = this.writeCSV
+    const that = this
 
     const connection = await this.snowflakeConnection
 
@@ -80,11 +85,11 @@ export default class Reports extends Command {
       sqlText,
       fetchAsString: ['Date'],
       complete(err: any, stmt: any, rows: any) {
+        const successMessage = `Generated ${type} report for ${appId}, with UTM_CAMPAIGN: ${utmCampaign} and RETAIL_ID: ${retailId}`
         //Try Task
-        const result = tryTask(err, rows)
+        const result = that.task.tryTask(err, rows)
         //Outputs the results of the query
-        cli.table(result, columns)
-
+        !quiet && cli.table(result, columns)
         //Write CSV
         const csvContext: CSVContext = {
           appId,
@@ -94,11 +99,11 @@ export default class Reports extends Command {
           utmCampaign,
         }
 
-        writeCSV(csvContext)
+        that.writeCSV(csvContext)
         //Success Message to print to stdout
-        const successMessage = `Generated ${type} report for ${appId}, with UTM_CAMPAIGN: ${utmCampaign} and RETAIL_ID: ${retailId}`
-        //Notify task is finished
-        finishTask(successMessage)
+        console.log(that.chalk.secondary(successMessage))
+
+        //Todo: implement finish task
       },
     })
   }
