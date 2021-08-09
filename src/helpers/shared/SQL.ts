@@ -1,14 +1,11 @@
-import chalk = require('chalk')
+import { QueryArgs, SQLContext } from '../interfaces/query-interface'
 
-import { table } from 'cli-ux/lib/styled/table'
-import { QueryArgs } from '../query/interface'
-import { SQLContext } from '../query/interface'
-import Command from '../shared/base'
 export default class SQL {
   private context: QueryArgs
   private appId: string
   private limit: string
   private type: string
+
   constructor(context: QueryArgs) {
     this.context = context
     this.appId = context.appId

@@ -1,6 +1,6 @@
 import { flags } from '@oclif/command'
 import Command from '../helpers/shared/base'
-import { QueryArgs, SQLContext } from '../helpers/query/interface'
+import { QueryArgs, SQLContext } from '../helpers/interfaces/query-interface'
 import SQL from '../helpers/shared/SQL'
 import { cli } from 'cli-ux'
 import chalk = require('chalk')
@@ -63,9 +63,7 @@ export default class Query extends Command {
       fetchAsString: ['Date'],
       complete(err: any, stmt: any, rows: any) {
         const result = tryTask(err, rows)
-
         cli.table(result, columns)
-
         finishTask(`Returned ${limit} counts for ${appId}`)
       },
     })
