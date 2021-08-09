@@ -8,6 +8,7 @@ export interface QueryArgsReports {
   type: string
   utmCampaign: string
   retailId: string
+  quiet?: boolean
 }
 export interface SheetColumns {
   UTM_CAMPAIGN: string
