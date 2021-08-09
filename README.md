@@ -44,7 +44,7 @@ USAGE
   $ pach configure
 ```
 
-_See code: [src/commands/configure.ts](https://github.com/pacholoamit/pach-s-glorious-cli/blob/v2.4.0/src/commands/configure.ts)_
+_See code: [src/commands/configure.ts](https://github.com/pacholoamit/pach-s-glorious-cli/blob/v2.5.0/src/commands/configure.ts)_
 
 ## `pach help [COMMAND]`
 
@@ -77,7 +77,7 @@ OPTIONS
   -l, --limit=limit  [default: NULL] flag to declare the limit of entries to be returned (note: NULL === no limits)
 ```
 
-_See code: [src/commands/query.ts](https://github.com/pacholoamit/pach-s-glorious-cli/blob/v2.4.0/src/commands/query.ts)_
+_See code: [src/commands/query.ts](https://github.com/pacholoamit/pach-s-glorious-cli/blob/v2.5.0/src/commands/query.ts)_
 
 ## `pach reports TYPE`
 
@@ -93,7 +93,7 @@ OPTIONS
   -s, --sheetName=sheetName  (required) Specified sheet name to process reports on
 ```
 
-_See code: [src/commands/reports.ts](https://github.com/pacholoamit/pach-s-glorious-cli/blob/v2.4.0/src/commands/reports.ts)_
+_See code: [src/commands/reports.ts](https://github.com/pacholoamit/pach-s-glorious-cli/blob/v2.5.0/src/commands/reports.ts)_
 
 ## `pach update [CHANNEL]`
 
