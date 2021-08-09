@@ -1,7 +1,7 @@
 {
   "name": "pach-cli",
   "description": "Pach's Glorious CLI",
-  "version": "2.1.0",
+  "version": "2.0.0",
   "author": "Pacholo Amit @pacholoamit",
   "bin": {
     "pach": "./bin/run"
@@ -83,7 +83,7 @@
   "scripts": {
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "eslint . --ext .ts --config .eslintrc",
-    "prepack": "rm -rf lib && oclif-dev manifest && oclif-dev readme",
+    "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
     "test": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\"",
     "version": "oclif-dev readme && git add README.md"
   },
