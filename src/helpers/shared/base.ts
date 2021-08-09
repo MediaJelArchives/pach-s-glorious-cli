@@ -116,6 +116,10 @@ export default abstract class extends Command {
     secondarylog(log: any): void {
       console.log(chalk.magentaBright.bold(log))
     },
+
+    warnLog(log: any): void {
+      console.log(chalk.yellowBright.bold(log))
+    },
   }
 
   /**

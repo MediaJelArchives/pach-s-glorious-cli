@@ -49,10 +49,10 @@ export default class Reports extends Command {
     const { sheetName: appId, quiet } = flags
     const { type } = args
     const intializationMessage = 'Generating report!'
-    const quietNotif = 'quiet flag passed, will not print table to stdout'
+    const quietLog = '--quiet flag passed, will not print table to stdout'
 
     this.task.initiateTask(intializationMessage)
-    quiet && this.chalk.primarylog(quietNotif)
+    quiet && this.chalk.warnLog(quietLog)
     const configExists = fs.pathExistsSync(this.configPath)
 
     if (configExists) {
@@ -82,8 +82,11 @@ export default class Reports extends Command {
     const sqlContext: SQLContext = new SQLReports(context).getStatement()
     const { appId, retailId, type, utmCampaign, quiet } = context
     const { sqlText, columns } = sqlContext
-    const that = this
+    const attemptMessage = `Querying snowflake for ${type} report... APP_ID=${appId}, RETAIL_ID=${retailId} ,UTM_CAMPAIGN=${utmCampaign}`
+    this.chalk.warnLog(attemptMessage)
+
     const connection = await this.snowflakeConnection
+    const that = this
 
     connection.execute({
       sqlText,
