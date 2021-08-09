@@ -103,11 +103,11 @@ export default abstract class extends Command {
    */
 
   protected chalk = {
-    primary(log: any): void {
-      chalk.cyanBright.bold(log)
+    primary(log: any): string {
+      return chalk.cyanBright.bold(log)
     },
-    secondary(log: any): void {
-      console.log(chalk.magentaBright(log))
+    secondary(log: any): string {
+      return chalk.magentaBright(log)
     },
   }
 

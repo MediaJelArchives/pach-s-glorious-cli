@@ -1,23 +1,25 @@
-export interface QueryArgs {
+interface QueryArgs {
   appId: string
   limit: string
   type: string
 }
 
-export interface QueryClass {
+interface QueryClass {
   Pageview: PageviewClass
   Transaction: TransactionClass
 }
 
-export interface SQLContext {
+interface SQLContext {
   sqlText: string
   columns: any
 }
 
-export interface PageviewClass {
+interface PageviewClass {
   getPageviews(context: QueryArgs): Promise<void>
 }
 
-export interface TransactionClass {
+interface TransactionClass {
   getTransactions(context: QueryArgs): Promise<void>
 }
+
+export { SQLContext, TransactionClass, PageviewClass, QueryArgs, QueryClass }
