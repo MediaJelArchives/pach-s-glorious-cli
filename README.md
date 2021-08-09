@@ -5,19 +5,16 @@ An evolution of the original Pach's handy dandy cli but better.
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 
 <!-- toc -->
-* [Pach's glorious CLI v2](#pachs-glorious-cli-v2)
-* [Installation](#installation)
-* [Additional set up](#additional-set-up)
-* [Usage](#usage)
-* [Commands](#commands)
+
+- [Pach's glorious CLI v2](#pachs-glorious-cli-v2)
+- [Installation](#installation)
+- [Commands](#commands)
 <!-- tocstop -->
 
 # Installation
 
-One of the reasons why I remade the Pach CLI in node-js is for
-ease of dependency management. Whereas in bash you'd have to
-manually install relevant dependencies which may be more difficult
-or easy (especially to archlinux user, I use Arch btw.) Everyone has `npm` or at least everyone `should.` Who knows I might even dockerize this...
+You may install this CLI via npm. You will need to run `pach configure` so
+as to generate your configuration file. Please follow the instructions.
 
 Run these commands to install:
 
@@ -25,63 +22,19 @@ Run these commands to install:
 
 npm install -g pach-cli ##Sudo if you have to
 
+pach configure
 
 ```
-
-# Additional set up
-
-It is absolutely IMPORTANT you add your snowflake credentials as an
-`environment variable` on your terminal. Do the following command for eaze of use:
-
-```bash
-## Expected output
-#!/bin/bash
-
-export SNOWFLAKE_ACCOUNT=<SNOWFLAKE_ACCOUNT_NAME>
-export SNOWFLAKE_USERNAME=<SNOWFLAKE_USER_NAME>
-export SNOWFLAKE_PASSWORD=<SNOWFLAKE_PASSWORD>
-export SNOWFLAKE_REGION=<SNOWFLAKE_REGION>
-export SNOWFLAKE_DATABASE=<SNOWFLAKE_DATABASE>
-export SNOWFLAKE_WAREHOUSE=<SNOWFLAKE_REPORTING>
-
-
-CTRL + A # In your setup.sh file
-
-CTRL + C # Copy that
-
-Open your terminal
-
-CTRL + V # Pase it
-
-## This will add the environment files permanently on your
-## parent terminal's scope. You can use `source` but I do not
-## recommend it because it's temporary.
-```
-
-# Usage
-
-<!-- usage -->
-```sh-session
-$ npm install -g pach-cli
-$ pach COMMAND
-running command...
-$ pach (-v|--version|version)
-pach-cli/1.2.0 linux-x64 node-v16.6.1
-$ pach --help [COMMAND]
-USAGE
-  $ pach COMMAND
-...
-```
-<!-- usagestop -->
 
 # Commands
 
 <!-- commands -->
-* [`pach configure`](#pach-configure)
-* [`pach help [COMMAND]`](#pach-help-command)
-* [`pach query TYPE`](#pach-query-type)
-* [`pach reports TYPE`](#pach-reports-type)
-* [`pach update [CHANNEL]`](#pach-update-channel)
+
+- [`pach configure`](#pach-configure)
+- [`pach help [COMMAND]`](#pach-help-command)
+- [`pach query TYPE`](#pach-query-type)
+- [`pach reports TYPE`](#pach-reports-type)
+- [`pach update [CHANNEL]`](#pach-update-channel)
 
 ## `pach configure`
 
@@ -153,4 +106,5 @@ USAGE
 ```
 
 _See code: [@oclif/plugin-update](https://github.com/oclif/plugin-update/blob/v1.3.10/src/commands/update.ts)_
+
 <!-- commandsstop -->
