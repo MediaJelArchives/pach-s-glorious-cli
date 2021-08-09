@@ -1,3 +1,7 @@
+import Command from '../helpers/shared/base'
+import * as fs from 'fs-extra'
+import * as PublicGoogleSheetsParser from 'public-google-sheets-parser'
+import SQLReports from '../helpers/shared/SQLReports'
 import { flags } from '@oclif/command'
 import {
   CSVContext,
@@ -10,10 +14,6 @@ import {
   SheetColumns,
 } from '../helpers/interfaces/report-interface'
 import { parse } from 'json2csv'
-import Command from '../helpers/shared/base'
-import * as fs from 'fs-extra'
-import * as PublicGoogleSheetsParser from 'public-google-sheets-parser'
-import SQLReports from '../helpers/shared/SQLReports'
 import { Statement } from 'snowflake-sdk'
 
 export default class Reports extends Command {

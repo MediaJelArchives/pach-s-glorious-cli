@@ -1,7 +1,6 @@
 import Command from '../helpers/shared/base'
 import cli from 'cli-ux'
 import fs = require('fs-extra')
-import chalk = require('chalk')
 
 export class Configure extends Command {
   static description = 'Initial configuration for CLI usage'

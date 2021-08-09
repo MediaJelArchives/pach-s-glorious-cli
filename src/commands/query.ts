@@ -3,7 +3,6 @@ import Command from '../helpers/shared/base'
 import { QueryArgs, SQLContext } from '../helpers/interfaces/query-interface'
 import SQL from '../helpers/shared/SQL'
 import { cli } from 'cli-ux'
-import chalk = require('chalk')
 
 export default class Query extends Command {
   static description = 'Query specific app ids from Snowflake database'
