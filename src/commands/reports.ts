@@ -92,8 +92,6 @@ export default class Reports extends Command {
       sqlText,
       fetchAsString: ['Date'],
       complete(err: Error, stmt: Statement, rows: any[]) {
-        const result = that.task.tryTask(err, rows)
-        !quiet && cli.table(result, columns)
         const csvContext: CSVContext = {
           appId,
           type,
@@ -101,12 +99,28 @@ export default class Reports extends Command {
           rows,
           utmCampaign,
         }
-        that.writeCSV(csvContext)
-        //Todo: implement finish task
+        if (rows.length !== 0) {
+          const rowCount = that.rowCount(csvContext)
+          that.chalk.warnLog(rowCount)
+
+          const result = that.task.tryTask(err, rows)
+          !quiet && cli.table(result, columns)
+
+          that.writeCSV(csvContext)
+        } else {
+          const noRows = that.rowCount(csvContext)
+          that.chalk.errorLog(noRows)
+        }
       },
     })
   }
 
+  // Todo: Transfer this to base class later
+  protected rowCount(context: CSVContext): string {
+    const { appId, retailId, rows, utmCampaign } = context
+    const message = `${rows.length} Rows returned for APP_ID=${appId}, UTM_CAMPAIGN=${utmCampaign}, RETAIL_ID=${retailId}, `
+    return message
+  }
   protected writeCSV(context: CSVContext): void {
     const { appId, retailId, type, rows, utmCampaign } = context
     const attemptMessage = 'Attempting to parse sheet contents to csv'
@@ -114,7 +128,7 @@ export default class Reports extends Command {
     const fields = Object.getOwnPropertyNames(rows[0])
     const opts = { fields }
     const csv = parse(rows, opts)
-    const title = `${appId} ${type} report - utm_campaign:${utmCampaign} retail_id:${retailId}.csv`
+    const title = `${appId} ${type} report - UTM_CAMPAIGN:${utmCampaign} RETAIL_ID:${retailId}.csv`
     fs.writeFileSync(title, csv)
     const successMessage = `Successfully generated ${type} report : ${title}`
     this.chalk.secondarylog(successMessage)

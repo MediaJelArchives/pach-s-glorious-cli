@@ -120,6 +120,9 @@ export default abstract class extends Command {
     warnLog(log: any): void {
       console.log(chalk.yellowBright.bold(log))
     },
+    errorLog(log: any): void {
+      console.log(chalk.redBright.bold(log))
+    },
   }
 
   /**
@@ -133,6 +136,7 @@ export default abstract class extends Command {
    */
 
   protected task = {
+    chalk: this.chalk,
     /**
      *
      * Prints message to stdout
@@ -156,14 +160,14 @@ export default abstract class extends Command {
      * @returns {any}
      *
      */
-    tryTask(err: Error, result: any): any {
+    tryTask(err: Error, rows: any[]): any {
       if (err) {
         throw new Error(
           'Failed to execute statement due to the following error: ' +
             err.message
         )
       } else {
-        return result
+        return rows
       }
     },
 
