@@ -6,10 +6,9 @@ An evolution of the original Pach's handy dandy cli but better.
 ![node-current](https://img.shields.io/node/v/pach-cli)
 
 <!-- toc -->
-
-- [Pach's glorious CLI v2](#pachs-glorious-cli-v2)
-- [Installation](#installation)
-- [Commands](#commands)
+* [Pach's glorious CLI v2](#pachs-glorious-cli-v2)
+* [Installation](#installation)
+* [Commands](#commands)
 <!-- tocstop -->
 
 # Installation
@@ -30,12 +29,11 @@ pach configure
 # Commands
 
 <!-- commands -->
-
-- [`pach configure`](#pach-configure)
-- [`pach help [COMMAND]`](#pach-help-command)
-- [`pach query TYPE`](#pach-query-type)
-- [`pach reports TYPE`](#pach-reports-type)
-- [`pach update [CHANNEL]`](#pach-update-channel)
+* [`pach configure`](#pach-configure)
+* [`pach help [COMMAND]`](#pach-help-command)
+* [`pach query TYPE`](#pach-query-type)
+* [`pach reports TYPE`](#pach-reports-type)
+* [`pach update [CHANNEL]`](#pach-update-channel)
 
 ## `pach configure`
 
@@ -46,7 +44,7 @@ USAGE
   $ pach configure
 ```
 
-_See code: [src/commands/configure.ts](https://github.com/pacholoamit/pach-cli-v2/blob/v1.2.0/src/commands/configure.ts)_
+_See code: [src/commands/configure.ts](https://github.com/pacholoamit/pach-s-glorious-cli/blob/v2.0.0/src/commands/configure.ts)_
 
 ## `pach help [COMMAND]`
 
@@ -79,7 +77,7 @@ OPTIONS
   -l, --limit=limit  [default: NULL] flag to declare the limit of entries to be returned (note: NULL === no limits)
 ```
 
-_See code: [src/commands/query.ts](https://github.com/pacholoamit/pach-cli-v2/blob/v1.2.0/src/commands/query.ts)_
+_See code: [src/commands/query.ts](https://github.com/pacholoamit/pach-s-glorious-cli/blob/v2.0.0/src/commands/query.ts)_
 
 ## `pach reports TYPE`
 
@@ -95,7 +93,7 @@ OPTIONS
   -s, --sheetName=sheetName  (required) Specified sheet name to process reports on
 ```
 
-_See code: [src/commands/reports.ts](https://github.com/pacholoamit/pach-cli-v2/blob/v1.2.0/src/commands/reports.ts)_
+_See code: [src/commands/reports.ts](https://github.com/pacholoamit/pach-s-glorious-cli/blob/v2.0.0/src/commands/reports.ts)_
 
 ## `pach update [CHANNEL]`
 
@@ -107,5 +105,4 @@ USAGE
 ```
 
 _See code: [@oclif/plugin-update](https://github.com/oclif/plugin-update/blob/v1.3.10/src/commands/update.ts)_
-
 <!-- commandsstop -->
