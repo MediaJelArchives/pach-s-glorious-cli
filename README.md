@@ -1,4 +1,4 @@
-# Pach's glorious CLI v2
+# Pach's glorious CLI
 
 An evolution of the original Pach's handy dandy cli but better.
 
@@ -6,9 +6,9 @@ An evolution of the original Pach's handy dandy cli but better.
 ![node-current](https://img.shields.io/node/v/pach-cli)
 
 <!-- toc -->
-* [Pach's glorious CLI v2](#pachs-glorious-cli-v2)
-* [Installation](#installation)
-* [Commands](#commands)
+
+- [Installation](#installation)
+- [Commands](#commands)
 <!-- tocstop -->
 
 # Installation
@@ -29,11 +29,12 @@ pach configure
 # Commands
 
 <!-- commands -->
-* [`pach configure`](#pach-configure)
-* [`pach help [COMMAND]`](#pach-help-command)
-* [`pach query TYPE`](#pach-query-type)
-* [`pach reports TYPE`](#pach-reports-type)
-* [`pach update [CHANNEL]`](#pach-update-channel)
+
+- [`pach configure`](#pach-configure)
+- [`pach help [COMMAND]`](#pach-help-command)
+- [`pach query TYPE`](#pach-query-type)
+- [`pach reports TYPE`](#pach-reports-type)
+- [`pach update [CHANNEL]`](#pach-update-channel)
 
 ## `pach configure`
 
@@ -108,4 +109,5 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-update](https://github.com/oclif/plugin-update/blob/v1.5.0/src/commands/update.ts)_
+
 <!-- commandsstop -->
