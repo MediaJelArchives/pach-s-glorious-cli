@@ -80,7 +80,7 @@ USAGE
 * [`pach configure`](#pach-configure)
 * [`pach help [COMMAND]`](#pach-help-command)
 * [`pach query TYPE`](#pach-query-type)
-* [`pach reports [FILE]`](#pach-reports-file)
+* [`pach reports TYPE`](#pach-reports-type)
 * [`pach update [CHANNEL]`](#pach-update-channel)
 
 ## `pach configure`
@@ -121,23 +121,24 @@ USAGE
 
 OPTIONS
   -a, --appId=appId  (required) flag to declare the app id to query
-  -l, --limit=limit  [default: NULL] flag to declare the limit of entries to be returned (note: 'NULL' === no limits)
+  -h, --help         Help documentation
+  -l, --limit=limit  [default: NULL] flag to declare the limit of entries to be returned (note: NULL === no limits)
 ```
 
 _See code: [src/commands/query.ts](https://github.com/pacholoamit/pach-cli-v2/blob/v1.2.0/src/commands/query.ts)_
 
-## `pach reports [FILE]`
+## `pach reports TYPE`
 
-describe the command here
+Generate automated reports via the Google Sheets API.
 
 ```
 USAGE
-  $ pach reports [FILE]
+  $ pach reports TYPE
 
 OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
+  -h, --help                 Help documentation
+  -q, --quiet                Specified sheet name to process reports on
+  -s, --sheetName=sheetName  (required) Specified sheet name to process reports on
 ```
 
 _See code: [src/commands/reports.ts](https://github.com/pacholoamit/pach-cli-v2/blob/v1.2.0/src/commands/reports.ts)_
