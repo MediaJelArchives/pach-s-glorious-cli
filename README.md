@@ -20,7 +20,7 @@ Run these commands to install:
 
 ```bash
 
-npm install -g pach-cli ##Sudo if you have to
+npm install -g pach-cli ## sudo if you have to
 
 pach configure
 

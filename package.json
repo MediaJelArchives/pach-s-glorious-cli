@@ -1,7 +1,7 @@
 {
   "name": "pach-cli",
   "description": "Pach's Glorious CLI",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "author": "Pacholo Amit @pacholoamit",
   "bin": {
     "pach": "./bin/run"
@@ -57,7 +57,8 @@
     "mediajel",
     "snowflake",
     "pach-cli",
-    "pach cli"
+    "pach cli",
+    "cli"
   ],
   "license": "MIT",
   "main": "lib/index.js",
@@ -78,7 +79,7 @@
       "registry": "https://www.npmjs.com/package/pach-cli"
     }
   },
-  "repository": "pacholoamit/pach-cli-v2",
+  "repository": "pacholoamit/pach-s-glorious-cli",
   "scripts": {
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "eslint . --ext .ts --config .eslintrc",
