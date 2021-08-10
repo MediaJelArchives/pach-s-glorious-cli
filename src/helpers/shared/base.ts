@@ -123,6 +123,9 @@ export default abstract class extends Command {
     errorLog(log: any): void {
       console.log(chalk.redBright.bold(log))
     },
+    successLog(log: any): void {
+      console.log(chalk.greenBright.bold(log))
+    },
   }
 
   /**

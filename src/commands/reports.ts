@@ -74,7 +74,7 @@ export default class Reports extends Command {
       })
     } else {
       this.chalk.secondary('Error: Please check if your config file exists')
-      this.exit
+      this.exit()
     }
   }
 
@@ -130,7 +130,7 @@ export default class Reports extends Command {
     const title = `${appId} ${type} report - UTM_CAMPAIGN:${utmCampaign} RETAIL_ID:${retailId}.csv`
     fs.writeFileSync(title, csv)
     const successMessage = `Successfully generated ${type} report : ${title}`
-    this.chalk.secondarylog(successMessage)
+    this.chalk.successLog(successMessage)
   }
 
   protected readSheetConfig(sheetName: string): SheetContext {
