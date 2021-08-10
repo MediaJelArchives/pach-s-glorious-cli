@@ -123,8 +123,7 @@ export default class Reports extends Command {
   }
   protected writeCSV(context: CSVContext): void {
     const { appId, retailId, type, rows, utmCampaign } = context
-    const attemptMessage = 'Attempting to parse sheet contents to csv'
-    this.chalk.secondarylog(attemptMessage)
+
     const fields = Object.getOwnPropertyNames(rows[0])
     const opts = { fields }
     const csv = parse(rows, opts)
