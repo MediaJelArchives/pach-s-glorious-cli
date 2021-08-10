@@ -56,11 +56,16 @@ export default class Reports extends Command {
     const configExists = fs.pathExistsSync(this.configPath)
 
     if (configExists) {
-      this.chalk.primarylog('Config file exists... Continuing!')
+      const configFileExists = 'Config file exists... Continuing!'
+      this.chalk.primarylog(configFileExists)
+
       const sheetContext = this.readSheetConfig(appId)
       const contents: any[] = await this.getPublicSpreadsheet(sheetContext)
 
-      contents.map(async (column: SheetColumns) => {
+      const sheetRows = `Generating cpc reports for ${contents.length} UTM campaigns`
+      this.chalk.secondarylog(sheetRows)
+
+      contents.map(async (column: SheetColumns, index) => {
         const { UTM_CAMPAIGN: utmCampaign, RETAIL_ID: retailId } = column
         const reportsContext: QueryArgsReports = {
           retailId,
