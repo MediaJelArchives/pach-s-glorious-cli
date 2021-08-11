@@ -33,7 +33,7 @@ export default class Reports extends Command {
       name: 'type',
       required: true,
       default: 'cpc',
-      options: ['cpc'],
+      options: ['cpc', 'organic'],
 
     },
   ]
