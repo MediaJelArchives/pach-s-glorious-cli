@@ -63,8 +63,10 @@ export default class Reports extends Command {
     sheetContents.map(async (column: SheetColumns) => {
       const { UTM_CAMPAIGN: utmCampaign, RETAIL_ID: retailId } = column
       const SQLContext = { appId, retailId, type, utmCampaign, quiet }
-      const tableColumns = new SQLReports(SQLContext).getColumns()
-      const rows = await this.queryResults(SQLContext)
+      const SQLClass = new SQLReports(SQLContext)
+
+      const tableColumns = SQLClass.getColumns()
+      const rows = await this.queryResults(SQLContext, SQLClass)
       const csvContext = { ...SQLContext, rows }
 
       if (rows.length !== 0) {
@@ -81,8 +83,8 @@ export default class Reports extends Command {
     })
   }
 
-  private async queryResults(context: QueryResultsArgs): Promise<any[]> {
-    const sqlText = new SQLReports(context).getStatement()
+  private async queryResults(context: QueryResultsArgs, SQLClass: SQLReports): Promise<any[]> {
+    const sqlText = SQLClass.getStatement()
     const { appId, retailId, type, utmCampaign } = context
 
     const attemptMessage = `Querying snowflake for ${type} report... APP_ID=${appId}, RETAIL_ID=${retailId}, UTM_CAMPAIGN=${utmCampaign}`
