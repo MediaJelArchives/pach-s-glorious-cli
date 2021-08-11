@@ -7,6 +7,7 @@ import { exec } from 'child_process'
 import chalk = require('chalk')
 // JSDOC
 import { hook } from '../../hooks/init'
+import { SnowflakeBase } from '../interfaces/base-interface'
 
 /**
  * This class serves as the main base class to be
@@ -49,19 +50,28 @@ export default abstract class extends Command {
 
   /**
    *
-   * Instantiates the Snowflake connection only
-   * if a config file exists. If a config file
-   * exists, we will read it and use the credentials
-   * for authenticating to Snowflake
+   * Main object containing all Snowflake
+   * related properties and methods
    *
-   * @async
    * @protected
-   * @returns {snowflake.Connection}
+   * @memberof Base
    *
    */
 
-  protected snowflakeConnection: Promise<snowflake.Connection> = new Promise(
-    (resolve, reject) => {
+  protected snowflake: SnowflakeBase = {
+    /**
+     *
+     * Instantiates the Snowflake connection only
+     * if a config file exists. If a config file
+     * exists, we will read it and use the credentials
+     * for authenticating to Snowflake
+     *
+     * @async
+     * @protected
+     * @returns {snowflake.Connection}
+     *
+     */
+    connection: new Promise((resolve, reject) => {
       const configExists = fs.pathExistsSync(this.configPath)
 
       if (configExists) {
@@ -90,15 +100,16 @@ export default abstract class extends Command {
           }
         })
       }
-    }
-  )
+    }),
+  }
 
   /**
    *
-   * Returns a string in chalk color
+   * Main object containing all chalk related
+   * properties and methods used for logging
    *
    * @protected
-   * @void
+   * @memberof Base
    *
    */
 
@@ -130,7 +141,7 @@ export default abstract class extends Command {
 
   /**
    *
-   * Property to store all Task related
+   * Main object containing all Task related
    * helper properties & methods.
    *
    * @protected

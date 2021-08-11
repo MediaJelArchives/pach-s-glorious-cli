@@ -74,8 +74,7 @@ export default class Reports extends Command {
           type,
           quiet,
         }
-        const returned = await this.generateReport(reportsContext)
-        console.log('ROOOOWSSS:', returned.length)
+        await this.generateReport(reportsContext)
       })
     } else {
       this.chalk.secondary('Error: Please check if your config file exists')
@@ -83,44 +82,41 @@ export default class Reports extends Command {
     }
   }
 
-  private async generateReport(context: QueryArgsReports): Promise<any[]> {
-    return new Promise(async (resolve) => {
-      const sqlContext: SQLContext = new SQLReports(context).getStatement()
-      const { appId, retailId, type, utmCampaign, quiet } = context
-      const { sqlText, columns } = sqlContext
-      const attemptMessage = `Querying snowflake for ${type} report... APP_ID=${appId}, RETAIL_ID=${retailId} ,UTM_CAMPAIGN=${utmCampaign}`
-      this.chalk.warnLog(attemptMessage)
+  private async generateReport(context: QueryArgsReports): Promise<void> {
+    const sqlContext: SQLContext = new SQLReports(context).getStatement()
+    const { appId, retailId, type, utmCampaign, quiet } = context
+    const { sqlText, columns } = sqlContext
+    const attemptMessage = `Querying snowflake for ${type} report... APP_ID=${appId}, RETAIL_ID=${retailId} ,UTM_CAMPAIGN=${utmCampaign}`
+    this.chalk.warnLog(attemptMessage)
 
-      const connection = await this.snowflakeConnection
-      const that = this
+    const connection = await this.snowflake.connection
+    const that = this
 
-      connection.execute({
-        sqlText,
-        fetchAsString: ['Date'],
-        complete(err: Error, stmt: Statement, rows: any[]) {
-          resolve(rows)
-          const csvContext: CSVContext = {
-            appId,
-            type,
-            retailId,
-            rows,
-            utmCampaign,
-          }
+    connection.execute({
+      sqlText,
+      fetchAsString: ['Date'],
+      complete(err: Error, stmt: Statement, rows: any[]) {
+        const csvContext: CSVContext = {
+          appId,
+          type,
+          retailId,
+          rows,
+          utmCampaign,
+        }
 
-          if (rows.length !== 0) {
-            const rowCount = that.rowCount(csvContext)
-            that.chalk.warnLog(rowCount)
+        if (rows.length !== 0) {
+          const rowCount = that.rowCount(csvContext)
+          that.chalk.warnLog(rowCount)
 
-            const result = that.task.tryTask(err, rows)
-            !quiet && cli.table(result, columns)
+          const result = that.task.tryTask(err, rows)
+          !quiet && cli.table(result, columns)
 
-            that.writeCSV(csvContext)
-          } else {
-            const noRows = that.rowCount(csvContext)
-            that.chalk.errorLog(noRows)
-          }
-        },
-      })
+          that.writeCSV(csvContext)
+        } else {
+          const noRows = that.rowCount(csvContext)
+          that.chalk.errorLog(noRows)
+        }
+      },
     })
   }
 
