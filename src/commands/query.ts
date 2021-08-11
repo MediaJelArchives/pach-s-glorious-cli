@@ -55,7 +55,7 @@ export default class Query extends Command {
     const tryTask = this.task.tryTask
     const finishTask = this.task.finishTask
 
-    const connection = await this.snowflakeConnection
+    const connection = await this.snowflake.connection
 
     connection.execute({
       sqlText,
