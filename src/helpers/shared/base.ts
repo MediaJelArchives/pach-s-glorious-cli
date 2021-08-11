@@ -7,6 +7,8 @@ import { exec } from 'child_process'
 import chalk = require('chalk')
 // JSDOC
 import { hook } from '../../hooks/init'
+import { SnowflakeBase, SnowflakeQueryArgs } from '../interfaces/base-interface'
+import { Statement } from 'snowflake-sdk'
 
 /**
  * This class serves as the main base class to be
@@ -49,19 +51,28 @@ export default abstract class extends Command {
 
   /**
    *
-   * Instantiates the Snowflake connection only
-   * if a config file exists. If a config file
-   * exists, we will read it and use the credentials
-   * for authenticating to Snowflake
+   * Main object containing all Snowflake
+   * related properties and methods
    *
-   * @async
    * @protected
-   * @returns {snowflake.Connection}
+   * @memberof Base
    *
    */
 
-  protected snowflakeConnection: Promise<snowflake.Connection> = new Promise(
-    (resolve, reject) => {
+  protected snowflake: SnowflakeBase = {
+    /**
+     *
+     * Instantiates the Snowflake connection only
+     * if a config file exists. If a config file
+     * exists, we will read it and use the credentials
+     * for authenticating to Snowflake
+     *
+     * @async
+     * @protected
+     * @returns {snowflake.Connection}
+     *
+     */
+    connection: new Promise((resolve, reject) => {
       const configExists = fs.pathExistsSync(this.configPath)
 
       if (configExists) {
@@ -90,15 +101,44 @@ export default abstract class extends Command {
           }
         })
       }
-    }
-  )
+    }),
+
+    /**
+     *
+     * Instantiates a snowflake query. Meant to be
+     * used after snowflake.connection
+     *
+     * @async
+     * @protected
+     * @param {SnowflakeQueryArgs} context
+     * @returns {any[]}
+     *
+     */
+    query(context: SnowflakeQueryArgs): Promise<any[]> {
+      return new Promise((resolve, reject) => {
+        const { connection, sqlText } = context
+
+        connection.execute({
+          sqlText,
+          fetchAsString: ['Date'],
+          complete(err: Error, stmt: Statement, rows: any[]) {
+            if (err) {
+              reject(err.message)
+            }
+            resolve(rows)
+          },
+        })
+      })
+    },
+  }
 
   /**
    *
-   * Returns a string in chalk color
+   * Main object containing all chalk related
+   * properties and methods used for logging
    *
    * @protected
-   * @void
+   * @memberof Base
    *
    */
 
@@ -130,7 +170,7 @@ export default abstract class extends Command {
 
   /**
    *
-   * Property to store all Task related
+   * Main object containing all Task related
    * helper properties & methods.
    *
    * @protected
@@ -161,7 +201,7 @@ export default abstract class extends Command {
      * @param {Error} err - Error object to return
      * @param {result} any - Result to return
      * @returns {any}
-     *
+     * @deprecated
      */
     tryTask(err: Error, rows: any[]): any {
       if (err) {
