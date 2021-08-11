@@ -2,6 +2,12 @@
   "extends": ["oclif", "oclif-typescript", "prettier"],
   "rules": {
     "no-console": "off",
-    "dot-notation": "off"
+    "dot-notation": "off",
+    "brace-style": [
+      "allman",
+      {
+        "allowSingleLine": true
+      }
+    ]
   }
 }

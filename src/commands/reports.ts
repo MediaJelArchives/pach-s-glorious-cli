@@ -3,18 +3,11 @@ import * as fs from 'fs-extra'
 import * as PublicGoogleSheetsParser from 'public-google-sheets-parser'
 import SQLReports from '../helpers/shared/SQLReports'
 import { flags } from '@oclif/command'
-import {
-  CSVContext,
-  SheetContext,
-} from '../helpers/interfaces/report-interface'
-import { SQLContext } from '../helpers/interfaces/query-interface'
+import { CSVContext, QueryResultsArgs, SheetContext } from '../helpers/interfaces/report-interface'
 import { cli } from 'cli-ux'
-import {
-  QueryArgsReports,
-  SheetColumns,
-} from '../helpers/interfaces/report-interface'
+import { SheetColumns } from '../helpers/interfaces/report-interface'
 import { parse } from 'json2csv'
-import { Statement } from 'snowflake-sdk'
+import { SnowflakeQueryArgs } from '../helpers/interfaces/base-interface'
 
 export default class Reports extends Command {
   static description = 'Generate automated reports via the Google Sheets API.'
@@ -41,83 +34,69 @@ export default class Reports extends Command {
       required: true,
       default: 'cpc',
       options: ['cpc'],
+
     },
   ]
+
+  private msg = {
+    logQuiet: '--quiet flag passed, will not print table to stdout',
+    intitializationMessage: 'Generating report!',
+    configFileExists: 'Config file exists... Continuing!',
+  }
 
   async run() {
     const { args, flags } = this.parse(Reports)
     const { sheetName: appId, quiet } = flags
     const { type } = args
-    const intializationMessage = 'Generating report!'
-    const quietLog = '--quiet flag passed, will not print table to stdout'
+    this.task.initiateTask(this.msg.intitializationMessage)
 
-    this.task.initiateTask(intializationMessage)
-    quiet && this.chalk.warnLog(quietLog)
-    const configExists = fs.pathExistsSync(this.configPath)
-
-    if (configExists) {
-      const configFileExists = 'Config file exists... Continuing!'
-      this.chalk.primarylog(configFileExists)
-
-      const sheetContext = this.readSheetConfig(appId)
-      const contents: any[] = await this.getPublicSpreadsheet(sheetContext)
-
-      const sheetRows = `Generating cpc reports for ${contents.length} UTM campaigns`
-      this.chalk.secondarylog(sheetRows)
-
-      contents.map(async (column: SheetColumns, index) => {
-        const { UTM_CAMPAIGN: utmCampaign, RETAIL_ID: retailId } = column
-        const reportsContext: QueryArgsReports = {
-          retailId,
-          utmCampaign,
-          appId,
-          type,
-          quiet,
-        }
-        await this.generateReport(reportsContext)
-      })
-    } else {
-      this.chalk.secondary('Error: Please check if your config file exists')
-      this.exit()
+    if (quiet) {
+      this.chalk.warnLog(this.msg.logQuiet)
     }
+
+    this.chalk.primarylog(this.msg.configFileExists)
+    const sheetContext = this.readSheetConfig(appId)
+    const sheetContents: any[] = await this.getPublicSpreadsheet(sheetContext)
+    const sheetRows = `Generating cpc reports for ${sheetContents.length} UTM campaigns`
+    this.chalk.secondarylog(sheetRows)
+
+    sheetContents.map(async (column: SheetColumns) => {
+      const { UTM_CAMPAIGN: utmCampaign, RETAIL_ID: retailId } = column
+      const SQLContext = { appId, retailId, type, utmCampaign, quiet }
+      const tableColumns = new SQLReports(SQLContext).getColumns()
+      const rows = await this.queryResults(SQLContext)
+      const csvContext = { ...SQLContext, rows }
+
+      if (rows.length !== 0) {
+        if (!quiet) { cli.table(rows, tableColumns) }
+
+        const rowLog = this.rowCount(csvContext)
+        this.chalk.warnLog(rowLog)
+        this.writeCSV(csvContext)
+      }
+      else {
+        const noRows = this.rowCount(csvContext)
+        this.chalk.errorLog(noRows)
+      }
+    })
   }
 
-  private async generateReport(context: QueryArgsReports): Promise<void> {
-    const sqlContext: SQLContext = new SQLReports(context).getStatement()
-    const { appId, retailId, type, utmCampaign, quiet } = context
-    const { sqlText, columns } = sqlContext
-    const attemptMessage = `Querying snowflake for ${type} report... APP_ID=${appId}, RETAIL_ID=${retailId} ,UTM_CAMPAIGN=${utmCampaign}`
+  private async queryResults(context: QueryResultsArgs): Promise<any[]> {
+    const sqlText = new SQLReports(context).getStatement()
+    const { appId, retailId, type, utmCampaign } = context
+
+    const attemptMessage = `Querying snowflake for ${type} report... APP_ID=${appId}, RETAIL_ID=${retailId}, UTM_CAMPAIGN=${utmCampaign}`
     this.chalk.warnLog(attemptMessage)
+    try {
+      const connection = await this.snowflake.connection
+      const snowflakeQueryArgs: SnowflakeQueryArgs = { connection, sqlText }
+      const queryResult = await this.snowflake.query(snowflakeQueryArgs)
 
-    const connection = await this.snowflake.connection
-    const that = this
-
-    connection.execute({
-      sqlText,
-      fetchAsString: ['Date'],
-      complete(err: Error, stmt: Statement, rows: any[]) {
-        const csvContext: CSVContext = {
-          appId,
-          type,
-          retailId,
-          rows,
-          utmCampaign,
-        }
-
-        if (rows.length !== 0) {
-          const rowCount = that.rowCount(csvContext)
-          that.chalk.warnLog(rowCount)
-
-          const result = that.task.tryTask(err, rows)
-          !quiet && cli.table(result, columns)
-
-          that.writeCSV(csvContext)
-        } else {
-          const noRows = that.rowCount(csvContext)
-          that.chalk.errorLog(noRows)
-        }
-      },
-    })
+      return queryResult
+    } catch (err) {
+      this.chalk.errorLog(err)
+      this.exit(1)
+    }
   }
 
   // Todo: Transfer this to base class later
@@ -126,10 +105,11 @@ export default class Reports extends Command {
     const message = `${rows.length} Rows returned for APP_ID=${appId}, UTM_CAMPAIGN=${utmCampaign}, RETAIL_ID=${retailId}, `
     return message
   }
+
   protected writeCSV(context: CSVContext): void {
     const { appId, retailId, type, rows, utmCampaign } = context
 
-    const fields = Object.getOwnPropertyNames(rows[0])
+    const fields = Object.getOwnPropertyNames(rows[0]) // Takes first obj as an example
     const opts = { fields }
     const csv = parse(rows, opts)
     const title = `${appId} ${type} report - UTM_CAMPAIGN:${utmCampaign} RETAIL_ID:${retailId}.csv`
@@ -157,7 +137,7 @@ export default class Reports extends Command {
       this.chalk.primarylog(attemptMessage)
       return spreadsheetContents
     } catch (err) {
-      this.chalk.secondary('Invalid sheet')
+      this.chalk.errorLog('Invalid sheet')
     }
   }
 }

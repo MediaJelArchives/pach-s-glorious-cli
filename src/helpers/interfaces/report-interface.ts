@@ -1,3 +1,5 @@
+
+
 export interface SheetContext {
   spreadsheetId: string
   sheetName: string
@@ -9,6 +11,13 @@ export interface QueryArgsReports {
   utmCampaign: string
   retailId: string
   quiet?: boolean
+}
+
+export interface QueryResultsArgs {
+  appId: string
+  type: string
+  utmCampaign: string
+  retailId: string
 }
 export interface SheetColumns {
   UTM_CAMPAIGN: string

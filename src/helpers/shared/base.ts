@@ -7,7 +7,8 @@ import { exec } from 'child_process'
 import chalk = require('chalk')
 // JSDOC
 import { hook } from '../../hooks/init'
-import { SnowflakeBase } from '../interfaces/base-interface'
+import { SnowflakeBase, SnowflakeQueryArgs } from '../interfaces/base-interface'
+import { Statement } from 'snowflake-sdk'
 
 /**
  * This class serves as the main base class to be
@@ -101,6 +102,34 @@ export default abstract class extends Command {
         })
       }
     }),
+
+    /**
+     *
+     * Instantiates a snowflake query. Meant to be
+     * used after snowflake.connection
+     *
+     * @async
+     * @protected
+     * @param {SnowflakeQueryArgs} context
+     * @returns {any[]}
+     *
+     */
+    query(context: SnowflakeQueryArgs): Promise<any[]> {
+      return new Promise((resolve, reject) => {
+        const { connection, sqlText } = context
+
+        connection.execute({
+          sqlText,
+          fetchAsString: ['Date'],
+          complete(err: Error, stmt: Statement, rows: any[]) {
+            if (err) {
+              reject(err.message)
+            }
+            resolve(rows)
+          },
+        })
+      })
+    },
   }
 
   /**
@@ -172,7 +201,7 @@ export default abstract class extends Command {
      * @param {Error} err - Error object to return
      * @param {result} any - Result to return
      * @returns {any}
-     *
+     * @deprecated
      */
     tryTask(err: Error, rows: any[]): any {
       if (err) {
