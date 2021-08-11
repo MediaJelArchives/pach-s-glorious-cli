@@ -57,7 +57,7 @@ export default class Reports extends Command {
     this.chalk.primarylog(this.msg.configFileExists)
     const sheetContext = this.readSheetConfig(appId)
     const sheetContents: any[] = await this.getPublicSpreadsheet(sheetContext)
-    const sheetRows = `Generating cpc reports for ${sheetContents.length} UTM campaigns`
+    const sheetRows = `Generating ${type} reports for ${sheetContents.length} UTM campaigns`
     this.chalk.secondarylog(sheetRows)
 
     sheetContents.map(async (column: SheetColumns) => {
