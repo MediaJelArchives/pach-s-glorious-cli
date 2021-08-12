@@ -49,7 +49,14 @@ export default abstract class extends Command {
 
   protected configPath: string = this.config.configDir + this.configFileName
 
-
+  /**
+   *
+   *Returns the config file of a user
+   *
+   * @protected
+   * @memberof Base
+   *
+   */
   protected getConfigFile(): ConfigJSON {
     const configSync = fs.readFileSync(this.configPath, 'utf8')
     const config: ConfigJSON = JSON.parse(configSync)
