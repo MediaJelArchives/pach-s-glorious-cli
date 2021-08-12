@@ -24,3 +24,8 @@ export interface SheetColumns {
   UTM_CAMPAIGN?: string
   RETAIL_ID?: string
 }
+
+export interface ReportProgress {
+  total: number
+  current: number
+}

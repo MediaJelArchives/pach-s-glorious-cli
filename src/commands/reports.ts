@@ -3,7 +3,7 @@ import * as fs from 'fs-extra'
 import * as PublicGoogleSheetsParser from 'public-google-sheets-parser'
 import SQLReports from '../helpers/shared/SQLReports'
 import { flags } from '@oclif/command'
-import { CSVContext, BaseContext, SheetContext, SheetColumns, MainContext } from '../helpers/interfaces/report-interface'
+import { CSVContext, BaseContext, SheetContext, SheetColumns, MainContext, ReportProgress } from '../helpers/interfaces/report-interface'
 import { cli } from 'cli-ux'
 import { parse } from 'json2csv'
 import { SnowflakeQueryArgs } from '../helpers/interfaces/base-interface'
@@ -53,6 +53,16 @@ export default class Reports extends Command {
 
   }
 
+  //Todo: Make this appear after Row log
+  private progress = {
+    log: this.chalk.primarylog,
+    initialValue: 0,
+    increment(total: number): void {
+      this.initialValue++
+      this.log(`Progress: ${this.initialValue}/${total}`)
+    }
+  }
+
   async run() {
     const { args, flags } = this.parse(Reports)
     const { sheetName: appId, quiet } = flags
@@ -69,21 +79,21 @@ export default class Reports extends Command {
     //Todo: refactor this, checks for unique retail IDs
     if (type === 'organic') {
       sheetColumns = sheetColumns.filter((elem, index) => sheetColumns.findIndex(obj => obj.RETAIL_ID === elem.RETAIL_ID) === index)
-      this.chalk.secondarylog(`Evaluating sheet results to process unique RETAIL_IDs, new length: ${sheetColumns.length} `)
+      this.chalk.secondarylog(`Evaluating sheet results to process unique RETAIL_IDs,${sheetColumns.length} entries to process.`)
     }
+
+
 
     sheetColumns.map(async (column: SheetColumns) => {
       const base = { appId, type, quiet }
       const SQLContext = this.sheetOperator(base, column)
       const SQLClass = new SQLReports(SQLContext)
-
       const tableColumns = SQLClass.getColumns()
-      const rows = await this.queryResults(SQLContext, SQLClass)
+      const rows = await this.queryResults(SQLContext, SQLClass, sheetColumns.length)
       const CSVContext = { ...SQLContext, rows }
 
       if (rows.length !== 0) {
         if (!quiet) { cli.table(rows, tableColumns) }
-
         const rowLog = this.rowCount(CSVContext)
         this.chalk.warnLog(rowLog)
         this.writeCSV(CSVContext)
@@ -94,7 +104,6 @@ export default class Reports extends Command {
       }
     })
   }
-
 
   private sheetOperator(base: BaseContext, columns: SheetColumns): MainContext {
     const { RETAIL_ID, UTM_CAMPAIGN } = columns
@@ -108,14 +117,13 @@ export default class Reports extends Command {
         return { base, sheetColumns }
       }
     }
-
   }
 
+  private async queryResults(context: MainContext, SQLClass: SQLReports, total: number) {
 
-  private async queryResults(context: MainContext, SQLClass: SQLReports) {
-    const sqlText = SQLClass.getStatement()
     const { base, sheetColumns } = context
     const { appId, type } = base
+    const sqlText = SQLClass.getStatement()
     const entriesLog = this.logEntries(sheetColumns)
 
     const attemptMessage = `Querying snowflake for ${type} report... APP_ID: ${appId},${entriesLog}`
@@ -124,7 +132,8 @@ export default class Reports extends Command {
       const connection = await this.snowflake.connection
       const snowflakeQueryArgs: SnowflakeQueryArgs = { connection, sqlText }
       const queryResult = await this.snowflake.query(snowflakeQueryArgs)
-
+      //Increment
+      this.progress.increment(total)
       return queryResult
     } catch (err) {
       this.chalk.errorLog(err)
@@ -137,7 +146,6 @@ export default class Reports extends Command {
     const { base, rows, sheetColumns } = context
     const { appId } = base
     const entriesLog = this.logEntries(sheetColumns)
-
     const message = `${rows.length} Rows returned for APP_ID=${appId},${entriesLog}`
     return message
   }
@@ -154,6 +162,7 @@ export default class Reports extends Command {
     fs.writeFileSync(title, csv)
     const successMessage = `Successfully generated ${type} report : ${title}`
     this.chalk.successLog(successMessage)
+
   }
 
   protected readSheetConfig(sheetName: string): SheetContext {
