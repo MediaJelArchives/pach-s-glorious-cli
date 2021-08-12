@@ -49,6 +49,12 @@ export default abstract class extends Command {
 
   protected configPath: string = this.config.configDir + this.configFileName
 
+
+  protected getConfigFile(): ConfigJSON {
+    const configSync = fs.readFileSync(this.configPath, 'utf8')
+    const config: ConfigJSON = JSON.parse(configSync)
+    return config
+  }
   /**
    *
    * Main object containing all Snowflake
@@ -189,7 +195,7 @@ export default abstract class extends Command {
      *
      */
     initiateTask(message: string): void {
-      const chalkMessage = chalk.greenBright.bold(message)
+      const chalkMessage = chalk.cyanBright.bold(message)
       cli.action.start(chalkMessage, '', { stdout: true })
     },
 
@@ -207,7 +213,7 @@ export default abstract class extends Command {
       if (err) {
         throw new Error(
           'Failed to execute statement due to the following error: ' +
-            err.message
+          err.message
         )
       } else {
         return rows

@@ -3,7 +3,7 @@ import * as fs from 'fs-extra'
 import * as PublicGoogleSheetsParser from 'public-google-sheets-parser'
 import SQLReports from '../helpers/shared/SQLReports'
 import { flags } from '@oclif/command'
-import { CSVContext, BaseContext, SheetContext, SheetColumns, MainContext, ReportProgress } from '../helpers/interfaces/report-interface'
+import { CSVContext, BaseContext, SheetContext, SheetColumns, MainContext } from '../helpers/interfaces/report-interface'
 import { cli } from 'cli-ux'
 import { parse } from 'json2csv'
 import { SnowflakeQueryArgs } from '../helpers/interfaces/base-interface'
@@ -81,8 +81,6 @@ export default class Reports extends Command {
       sheetColumns = sheetColumns.filter((elem, index) => sheetColumns.findIndex(obj => obj.RETAIL_ID === elem.RETAIL_ID) === index)
       this.chalk.secondarylog(`Evaluating sheet results to process unique RETAIL_IDs,${sheetColumns.length} entries to process.`)
     }
-
-
 
     sheetColumns.map(async (column: SheetColumns) => {
       const base = { appId, type, quiet }

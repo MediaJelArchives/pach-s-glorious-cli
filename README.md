@@ -29,11 +29,28 @@ pach configure
 # Commands
 
 <!-- commands -->
+* [`pach abort [FILE]`](#pach-abort-file)
 * [`pach configure`](#pach-configure)
 * [`pach help [COMMAND]`](#pach-help-command)
 * [`pach query TYPE`](#pach-query-type)
 * [`pach reports TYPE`](#pach-reports-type)
 * [`pach update [CHANNEL]`](#pach-update-channel)
+
+## `pach abort [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ pach abort [FILE]
+
+OPTIONS
+  -f, --force
+  -h, --help       show CLI help
+  -n, --name=name  name to print
+```
+
+_See code: [src/commands/abort.ts](https://github.com/pacholoamit/pach-s-glorious-cli/blob/v2.9.0/src/commands/abort.ts)_
 
 ## `pach configure`
 
