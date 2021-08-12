@@ -1,7 +1,7 @@
-import { QueryArgsReports } from "./report-interface";
+import { MainContext, SheetColumns } from "./report-interface";
 
 export interface SQLRequirements {
-    sqlText: (arg0: SQLTextArgs) => string
+    sqlText: (arg0: MainContext) => string
 }
 
 export interface CPCSQLRequirements extends SQLRequirements {
@@ -29,4 +29,4 @@ export interface OrganicSQLRequirements extends SQLRequirements {
     }
 }
 
-export interface SQLTextArgs extends QueryArgsReports { }
+export interface SQLTextArgs extends SheetColumns { }

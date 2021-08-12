@@ -1,23 +1,16 @@
-import { SQLContext } from '../interfaces/query-interface'
-import { QueryArgsReports } from '../interfaces/report-interface'
-import { CPCSQLRequirements, OrganicSQLRequirements, SQLRequirements, SQLTextArgs } from '../interfaces/SQL-interface'
+
+import { MainContext } from '../interfaces/report-interface'
+import { CPCSQLRequirements, OrganicSQLRequirements, } from '../interfaces/SQL-interface'
 
 export default class SQLReports {
-  private context: QueryArgsReports
-  private appId: string
-  private utmCampaign: string
-  private retailId: string
-  private type: string
-  constructor(context: QueryArgsReports) {
+  private context: MainContext
+
+  constructor(context: MainContext) {
     this.context = context
-    this.appId = context.appId
-    this.utmCampaign = context.utmCampaign
-    this.retailId = context.retailId
-    this.type = context.type
   }
 
   public getStatement(): string {
-    switch (this.type) {
+    switch (this.context.base.type) {
       case 'cpc': {
         return this.cpc.sqlText(this.context)
       }
@@ -27,7 +20,7 @@ export default class SQLReports {
     }
   }
   public getColumns() {
-    switch (this.type) {
+    switch (this.context.base.type) {
       case 'cpc': {
         return this.cpc.columns
       }
@@ -38,8 +31,10 @@ export default class SQLReports {
   }
 
   private cpc: CPCSQLRequirements = {
-    sqlText(context: SQLTextArgs): string {
-      const { appId, retailId, utmCampaign } = context
+    sqlText(context: MainContext): string {
+      const { base, sheetColumns } = context
+      const { appId } = base
+      const { RETAIL_ID, UTM_CAMPAIGN } = sheetColumns
 
       return `SELECT TR_ORDERID, TR_TOTAL, MKT_MEDIUM, MKT_SOURCE, MKT_CAMPAIGN, TRANSACTION_PAGE_URL, TRANSACTION_TIME, count(*) as CLICKS FROM (
     WITH impressions AS (
@@ -64,7 +59,7 @@ export default class SQLReports {
     MKT_CONTENT,
     MKT_CAMPAIGN,
     MKT_CLICKID
-    FROM DATA_COLLECTION_DB.SNOWPLOW.BASE_EVENTS where APP_ID = '${appId}' and EVENT = 'page_view' and MKT_CAMPAIGN = '${utmCampaign}' AND USER_IPADDRESS NOT IN(
+    FROM DATA_COLLECTION_DB.SNOWPLOW.BASE_EVENTS where APP_ID = '${appId}' and EVENT = 'page_view' and MKT_CAMPAIGN = '${UTM_CAMPAIGN}' AND USER_IPADDRESS NOT IN(
     SELECT USER_IPADDRESS FROM (
         SELECT USER_IPADDRESS, COUNT(USER_IPADDRESS) AS IPCOUNT FROM DATA_COLLECTION_DB.SNOWPLOW.AD_IMPRESSIONS WHERE COLLECTOR_TSTAMP > CURRENT_DATE() -30 GROUP BY USER_IPADDRESS HAVING ipcount > 99
       )) order by 1,2 
@@ -82,7 +77,7 @@ export default class SQLReports {
     TR_ORDERID,
     TR_AFFILIATION,
     TR_TOTAL
-    FROM DATA_COLLECTION_DB.SNOWPLOW.COMMERCE_TRANSACTIONS where APP_ID = '${appId}' AND TRANSACTION_PAGE_URL LIKE ANY ('%${retailId}%') AND USER_IPADDRESS NOT IN(
+    FROM DATA_COLLECTION_DB.SNOWPLOW.COMMERCE_TRANSACTIONS where APP_ID = '${appId}' AND TRANSACTION_PAGE_URL LIKE ANY ('%${RETAIL_ID}%') AND USER_IPADDRESS NOT IN(
     SELECT USER_IPADDRESS FROM (
       SELECT USER_IPADDRESS ,count(*) as IPCOUNT FROM DATA_COLLECTION_DB.SNOWPLOW.COMMERCE_TRANSACTIONS WHERE COLLECTOR_TSTAMP > CURRENT_DATE() -180 GROUP BY USER_IPADDRESS HAVING IPCOUNT > 15
       )) order by 1,2
@@ -188,8 +183,10 @@ export default class SQLReports {
   }
 
   private organic: OrganicSQLRequirements = {
-    sqlText(context: SQLTextArgs): string {
-      const { appId, retailId } = context
+    sqlText(context: MainContext): string {
+      const { base, sheetColumns } = context
+      const { appId } = base
+      const { RETAIL_ID } = sheetColumns
 
       return ` SELECT 
       TR_ORDERID,
@@ -243,7 +240,7 @@ export default class SQLReports {
         TR_ORDERID,
         TR_AFFILIATION,
         TR_TOTAL
-        FROM DATA_COLLECTION_DB.SNOWPLOW.COMMERCE_TRANSACTIONS where APP_ID = '${appId}' AND TRANSACTION_PAGE_URL LIKE ANY ('%${retailId}%') AND USER_IPADDRESS NOT IN(
+        FROM DATA_COLLECTION_DB.SNOWPLOW.COMMERCE_TRANSACTIONS where APP_ID = '${appId}' AND TRANSACTION_PAGE_URL LIKE ANY ('%${RETAIL_ID}%') AND USER_IPADDRESS NOT IN(
         SELECT USER_IPADDRESS FROM (
           SELECT USER_IPADDRESS ,count(*) as IPCOUNT FROM DATA_COLLECTION_DB.SNOWPLOW.COMMERCE_TRANSACTIONS WHERE COLLECTOR_TSTAMP > CURRENT_DATE() -180 GROUP BY USER_IPADDRESS HAVING IPCOUNT > 15
           )) order by 1,2
