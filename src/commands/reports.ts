@@ -91,7 +91,7 @@ export default class Reports extends Command {
     //Todo: Refactor
     if (type === 'organic') {
       sheetColumns = sheetColumns.filter((elem, index) => sheetColumns.findIndex(obj => obj.RETAIL_ID === elem.RETAIL_ID) === index)
-      this.chalk.secondarylog(`Evaluating sheet results to process unique RETAIL_IDs, ${sheetColumns.length} entries to process.`)
+      this.chalk.secondarylog(`Evaluating ${appId} results to process unique RETAIL_IDs... ${sheetColumns.length} entries to process.`)
       this.progress.incrementTotal(sheetColumns.length)
     }
     if (type === 'cpc') {
@@ -193,12 +193,11 @@ export default class Reports extends Command {
   protected async getPublicSpreadsheet(context: SheetContext): Promise<SheetColumns[]> {
     const { sheetName, spreadsheetId } = context
     const parser = new PublicGoogleSheetsParser(spreadsheetId, sheetName)
-    // const attemptMessage = `Parsing contents of Sheet name: ${sheetName} to JSON`
 
     try {
       const spreadsheetContents: SheetColumns[] = await parser.parse()
       const sheetEntriesCountMessage = `Retrieved ${spreadsheetContents.length} entries from Sheet name: ${sheetName}`
-      // this.chalk.primarylog(attemptMessage)
+      this.chalk.secondarylog(sheetEntriesCountMessage)
       return spreadsheetContents
     } catch (err) {
       this.chalk.errorLog('Invalid sheet')
