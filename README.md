@@ -45,7 +45,7 @@ USAGE
   $ pach abort
 ```
 
-_See code: [src/commands/abort.ts](https://github.com/pacholoamit/pach-s-glorious-cli/blob/v2.11.0/src/commands/abort.ts)_
+_See code: [src/commands/abort.ts](https://github.com/pacholoamit/pach-s-glorious-cli/blob/v3.0.0/src/commands/abort.ts)_
 
 ## `pach configure`
 
@@ -56,7 +56,7 @@ USAGE
   $ pach configure
 ```
 
-_See code: [src/commands/configure.ts](https://github.com/pacholoamit/pach-s-glorious-cli/blob/v2.11.0/src/commands/configure.ts)_
+_See code: [src/commands/configure.ts](https://github.com/pacholoamit/pach-s-glorious-cli/blob/v3.0.0/src/commands/configure.ts)_
 
 ## `pach help [COMMAND]`
 
@@ -89,7 +89,7 @@ OPTIONS
   -l, --limit=limit  [default: NULL] flag to declare the limit of entries to be returned (note: NULL === no limits)
 ```
 
-_See code: [src/commands/query.ts](https://github.com/pacholoamit/pach-s-glorious-cli/blob/v2.11.0/src/commands/query.ts)_
+_See code: [src/commands/query.ts](https://github.com/pacholoamit/pach-s-glorious-cli/blob/v3.0.0/src/commands/query.ts)_
 
 ## `pach reports TYPE`
 
@@ -109,7 +109,7 @@ EXAMPLES
   $ pach reports organic -s Gormley
 ```
 
-_See code: [src/commands/reports.ts](https://github.com/pacholoamit/pach-s-glorious-cli/blob/v2.11.0/src/commands/reports.ts)_
+_See code: [src/commands/reports.ts](https://github.com/pacholoamit/pach-s-glorious-cli/blob/v3.0.0/src/commands/reports.ts)_
 
 ## `pach update [CHANNEL]`
 
