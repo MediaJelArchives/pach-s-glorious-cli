@@ -86,18 +86,23 @@ export default class Reports extends Command {
   private async mainProcess(base: BaseContext): Promise<void> {
     const { appId, quiet, type } = base
     const sheetContext = this.readSheetConfig(appId)
-    let sheetColumns: any[] = await this.getPublicSpreadsheet(sheetContext)
+    let sheetColumns: SheetColumns[] = await this.getPublicSpreadsheet(sheetContext)
 
-
+    //Todo: Refactor
     if (type === 'organic') {
       sheetColumns = sheetColumns.filter((elem, index) => sheetColumns.findIndex(obj => obj.RETAIL_ID === elem.RETAIL_ID) === index)
       this.chalk.secondarylog(`Evaluating sheet results to process unique RETAIL_IDs, ${sheetColumns.length} entries to process.`)
+      this.progress.incrementTotal(sheetColumns.length)
+    }
+    if (type === 'cpc') {
+      this.progress.incrementTotal(sheetColumns.length)
     }
 
     sheetColumns.map(async (column: SheetColumns) => {
       const base = { appId, type, quiet }
-      const SQLContext = this.sheetOperator(base, column)
+      const SQLContext = this.handleSheetProperties(base, column)
       const SQLClass = new SQLReports(SQLContext)
+
       const tableColumns = SQLClass.getColumns()
       const rows = await this.queryResults(SQLContext, SQLClass)
       const CSVContext = { ...SQLContext, rows }
@@ -113,11 +118,9 @@ export default class Reports extends Command {
         this.chalk.errorLog(noRows)
       }
     })
-
-
   }
 
-  private sheetOperator(base: BaseContext, columns: SheetColumns): MainContext {
+  private handleSheetProperties(base: BaseContext, columns: SheetColumns): MainContext {
     const { RETAIL_ID, UTM_CAMPAIGN } = columns
     switch (base.type) {
       case 'cpc': {
@@ -195,8 +198,6 @@ export default class Reports extends Command {
     try {
       const spreadsheetContents: SheetColumns[] = await parser.parse()
       const sheetEntriesCountMessage = `Retrieved ${spreadsheetContents.length} entries from Sheet name: ${sheetName}`
-      this.progress.incrementTotal(spreadsheetContents.length)
-      this.chalk.secondarylog(sheetEntriesCountMessage)
       // this.chalk.primarylog(attemptMessage)
       return spreadsheetContents
     } catch (err) {
