@@ -173,7 +173,8 @@ export default class Reports extends Command {
     const fields = Object.getOwnPropertyNames(rows[0]) // Takes first obj as an example
     const opts = { fields }
     const csv = parse(rows, opts)
-    const title = `${appId} ${type} report - ${entriesLog}.csv`
+    const title = `${appId}/${appId} ${type} report - ${entriesLog}.csv`
+    fs.ensureFileSync(title)
     fs.writeFileSync(title, csv)
     const successMessage = `Successfully generated ${type} report : ${title}`
     this.chalk.successLog(successMessage)
