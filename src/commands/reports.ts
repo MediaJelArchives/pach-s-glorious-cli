@@ -14,10 +14,11 @@ export default class Reports extends Command {
   static flags = {
     help: flags.help({ char: 'h', description: `Help documentation` }),
 
-    sheetName: flags.string({
+    sheetNames: flags.string({
       char: 's',
       description: 'Specified sheet name to process reports on',
       required: true,
+      multiple: true
     }),
 
     quiet: flags.boolean({
@@ -65,12 +66,18 @@ export default class Reports extends Command {
 
   async run() {
     const { args, flags } = this.parse(Reports)
-    const { sheetName: appId, quiet } = flags
+    const { sheetNames: appIds, quiet } = flags
     const { type } = args
+
     this.task.initiateTask(this.msg.intitializationMessage)
     this.chalk.primarylog(this.msg.configFileExists)
     this.chalk.warnLog(this.msg.logQuiet(quiet))
 
+    appIds.map(async (appId: string) => await this.mainProcess({ appId, type, quiet }))
+  }
+
+  private async mainProcess(base: BaseContext): Promise<void> {
+    const { appId, quiet, type } = base
     const sheetContext = this.readSheetConfig(appId)
     let sheetColumns: any[] = await this.getPublicSpreadsheet(sheetContext)
     const sheetRows = `Generating ${type} reports for ${sheetColumns.length} entries`
@@ -79,7 +86,7 @@ export default class Reports extends Command {
     //Todo: refactor this, checks for unique retail IDs
     if (type === 'organic') {
       sheetColumns = sheetColumns.filter((elem, index) => sheetColumns.findIndex(obj => obj.RETAIL_ID === elem.RETAIL_ID) === index)
-      this.chalk.secondarylog(`Evaluating sheet results to process unique RETAIL_IDs,${sheetColumns.length} entries to process.`)
+      this.chalk.secondarylog(`Evaluating sheet results to process unique RETAIL_IDs, ${sheetColumns.length} entries to process.`)
     }
 
     sheetColumns.map(async (column: SheetColumns) => {
@@ -101,6 +108,8 @@ export default class Reports extends Command {
         this.chalk.errorLog(noRows)
       }
     })
+
+
   }
 
   private sheetOperator(base: BaseContext, columns: SheetColumns): MainContext {
