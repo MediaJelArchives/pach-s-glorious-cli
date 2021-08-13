@@ -56,11 +56,16 @@ export default class Reports extends Command {
 
   //Todo: Make this appear after Row log
   private progress = {
+    current: 0,
+    total: 0,
     log: this.chalk.primarylog,
-    initialValue: 0,
-    increment(total: number): void {
-      this.initialValue++
-      this.log(`Progress: ${this.initialValue}/${total}`)
+    incrementCurrent(): void {
+      this.current++
+      this.log(`Progress: ${this.current}/${this.total}`)
+    },
+    incrementTotal(newIndex: number): void {
+      this.total = this.total + newIndex
+      this.log(`Total entries to process: ${this.total}`)
     }
   }
 
@@ -73,17 +78,17 @@ export default class Reports extends Command {
     this.chalk.primarylog(this.msg.configFileExists)
     this.chalk.warnLog(this.msg.logQuiet(quiet))
 
-    appIds.map(async (appId: string) => await this.mainProcess({ appId, type, quiet }))
+    appIds.map(async (appId: string) => {
+      await this.mainProcess({ appId, type, quiet })
+    })
   }
 
   private async mainProcess(base: BaseContext): Promise<void> {
     const { appId, quiet, type } = base
     const sheetContext = this.readSheetConfig(appId)
     let sheetColumns: any[] = await this.getPublicSpreadsheet(sheetContext)
-    const sheetRows = `Generating ${type} reports for ${sheetColumns.length} entries`
-    this.chalk.secondarylog(sheetRows)
 
-    //Todo: refactor this, checks for unique retail IDs
+
     if (type === 'organic') {
       sheetColumns = sheetColumns.filter((elem, index) => sheetColumns.findIndex(obj => obj.RETAIL_ID === elem.RETAIL_ID) === index)
       this.chalk.secondarylog(`Evaluating sheet results to process unique RETAIL_IDs, ${sheetColumns.length} entries to process.`)
@@ -94,7 +99,7 @@ export default class Reports extends Command {
       const SQLContext = this.sheetOperator(base, column)
       const SQLClass = new SQLReports(SQLContext)
       const tableColumns = SQLClass.getColumns()
-      const rows = await this.queryResults(SQLContext, SQLClass, sheetColumns.length)
+      const rows = await this.queryResults(SQLContext, SQLClass)
       const CSVContext = { ...SQLContext, rows }
 
       if (rows.length !== 0) {
@@ -126,7 +131,7 @@ export default class Reports extends Command {
     }
   }
 
-  private async queryResults(context: MainContext, SQLClass: SQLReports, total: number) {
+  private async queryResults(context: MainContext, SQLClass: SQLReports) {
 
     const { base, sheetColumns } = context
     const { appId, type } = base
@@ -140,7 +145,7 @@ export default class Reports extends Command {
       const snowflakeQueryArgs: SnowflakeQueryArgs = { connection, sqlText }
       const queryResult = await this.snowflake.query(snowflakeQueryArgs)
       //Increment
-      this.progress.increment(total)
+      this.progress.incrementCurrent()
       return queryResult
     } catch (err) {
       this.chalk.errorLog(err)
@@ -185,10 +190,14 @@ export default class Reports extends Command {
   protected async getPublicSpreadsheet(context: SheetContext): Promise<SheetColumns[]> {
     const { sheetName, spreadsheetId } = context
     const parser = new PublicGoogleSheetsParser(spreadsheetId, sheetName)
-    const attemptMessage = `Parsing contents of Sheet name: ${sheetName} to JSON`
+    // const attemptMessage = `Parsing contents of Sheet name: ${sheetName} to JSON`
+
     try {
       const spreadsheetContents: SheetColumns[] = await parser.parse()
-      this.chalk.primarylog(attemptMessage)
+      const sheetEntriesCountMessage = `Retrieved ${spreadsheetContents.length} entries from Sheet name: ${sheetName}`
+      this.progress.incrementTotal(spreadsheetContents.length)
+      this.chalk.secondarylog(sheetEntriesCountMessage)
+      // this.chalk.primarylog(attemptMessage)
       return spreadsheetContents
     } catch (err) {
       this.chalk.errorLog('Invalid sheet')
