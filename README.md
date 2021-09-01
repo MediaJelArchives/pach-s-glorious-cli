@@ -23,6 +23,8 @@ Run these commands to install:
 
 git clone https://github.com/pacholoamit/pach-s-glorious-cli.git
 
+cd pach-s-glorious-cli
+
 sudo npm link ## sudo if you have to
 
 pach configure
