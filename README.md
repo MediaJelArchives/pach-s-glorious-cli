@@ -6,9 +6,10 @@ An evolution of the original Pach's handy dandy cli but better.
 ![node-current](https://img.shields.io/node/v/pach-cli)
 
 <!-- toc -->
-* [Pach's glorious CLI](#pachs-glorious-cli)
-* [Installation](#installation)
-* [Commands](#commands)
+
+- [Pach's glorious CLI](#pachs-glorious-cli)
+- [Installation](#installation)
+- [Commands](#commands)
 <!-- tocstop -->
 
 # Installation
@@ -20,7 +21,9 @@ Run these commands to install:
 
 ```bash
 
-npm install -g pach-cli ## sudo if you have to
+git clone https://github.com/pacholoamit/pach-s-glorious-cli.git
+
+sudo npm link ## sudo if you have to
 
 pach configure
 
@@ -29,12 +32,13 @@ pach configure
 # Commands
 
 <!-- commands -->
-* [`pach abort`](#pach-abort)
-* [`pach configure`](#pach-configure)
-* [`pach help [COMMAND]`](#pach-help-command)
-* [`pach query TYPE`](#pach-query-type)
-* [`pach reports TYPE`](#pach-reports-type)
-* [`pach update [CHANNEL]`](#pach-update-channel)
+
+- [`pach abort`](#pach-abort)
+- [`pach configure`](#pach-configure)
+- [`pach help [COMMAND]`](#pach-help-command)
+- [`pach query TYPE`](#pach-query-type)
+- [`pach reports TYPE`](#pach-reports-type)
+- [`pach update [CHANNEL]`](#pach-update-channel)
 
 ## `pach abort`
 
@@ -124,4 +128,5 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-update](https://github.com/oclif/plugin-update/blob/v1.5.0/src/commands/update.ts)_
+
 <!-- commandsstop -->
