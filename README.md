@@ -3,7 +3,6 @@
 An evolution of the original Pach's handy dandy cli but better.
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
-![node-current](https://img.shields.io/node/v/pach-cli)
 
 <!-- toc -->
 
